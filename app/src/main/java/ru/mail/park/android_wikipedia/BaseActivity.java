@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,20 +17,20 @@ import dbservice.DbService;
 import ru.mail.park.android_wikipedia.fragments.ArticleFragment;
 import wikipedia.Article;
 
-public class MainActivity extends AppCompatActivity
+public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
     private DbService dbService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.base_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         dbService = ((ApplicationModified) getApplication()).getDbService();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.main_activity);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.base_activity);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.main_activity);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.base_activity);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_base, menu);
         return true;
     }
 
@@ -71,11 +70,11 @@ public class MainActivity extends AppCompatActivity
         Intent i;
         switch (id){
             case R.id.menu_settings:
-                i = new Intent(MainActivity.this, SettingsActivity.class);
+                i = new Intent(BaseActivity.this, SettingsActivity.class);
                 startActivity(i);
                 return true;
             case R.id.menu_history:
-                i = new Intent(MainActivity.this, HistoryActivity.class);
+                i = new Intent(BaseActivity.this, HistoryActivity.class);
                 startActivity(i);
                 return true;
         }
@@ -103,7 +102,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.main_activity);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.base_activity);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -126,7 +125,7 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.articles_container, ArticleFragment.newInstance(article.getTitle()));
+            transaction.add(R.id.fragment_container, ArticleFragment.newInstance(article.getTitle()));
             transaction.commit();
         }
     }

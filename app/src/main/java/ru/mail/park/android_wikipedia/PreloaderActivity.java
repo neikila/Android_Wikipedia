@@ -25,7 +25,7 @@ public class PreloaderActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(PreloaderActivity.this, MainActivity.class);
+                Intent i = new Intent(PreloaderActivity.this, BaseActivity.class);
                 startActivity(i);
                 finish();
             }
