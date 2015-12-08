@@ -15,6 +15,7 @@ import android.view.MenuItem;
 
 import dbservice.DbService;
 import ru.mail.park.android_wikipedia.fragments.ArticleFragment;
+import ru.mail.park.android_wikipedia.fragments.HistoryFragment;
 import ru.mail.park.android_wikipedia.fragments.MainFragment;
 import wikipedia.Article;
 
@@ -71,12 +72,8 @@ public class BaseActivity extends AppCompatActivity
         Intent i;
         switch (id){
             case R.id.menu_settings:
-                i = new Intent(BaseActivity.this, SettingsActivity.class);
-                startActivity(i);
                 return true;
             case R.id.menu_history:
-                i = new Intent(BaseActivity.this, HistoryActivity.class);
-                startActivity(i);
                 return true;
         }
         //noinspection SimplifiableIfStatement
@@ -101,6 +98,10 @@ public class BaseActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
+        } else if (id == R.id.nav_history) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, HistoryFragment.newInstance());
+            transaction.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.base_activity);

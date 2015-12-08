@@ -1,11 +1,9 @@
-package ru.mail.park.android_wikipedia;
+package ru.mail.park.android_wikipedia.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -16,43 +14,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dbservice.DbService;
+import ru.mail.park.android_wikipedia.ApplicationModified;
+import ru.mail.park.android_wikipedia.R;
 
-public class HistoryActivity extends AppCompatActivity {
-    DbService dbService;
+public class HistoryFragment extends Fragment {
+    private DbService dbService;
+
+    public static HistoryFragment newInstance() {
+        HistoryFragment fragment = new HistoryFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public HistoryFragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        dbService = ((ApplicationModified)getActivity().getApplication()).getDbService();
         super.onCreate(savedInstanceState);
-        dbService = ((ApplicationModified)getApplication()).getDbService();
-        setContentView(R.layout.activity_history);
+        if (getArguments() != null) {
+            // TODO пока тут ничего делать
+        }
         new GetArticlesNameFromHistoryAsyncTask().execute();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_history, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_history, container, false);
     }
 
     private class ListItemTranslationAdapter extends ArrayAdapter<String> {
         public ListItemTranslationAdapter(List<String> objects) {
-            super(HistoryActivity.this, 0, objects);
+            super(getActivity(), 0, objects);
         }
 
         @Override
@@ -96,7 +94,7 @@ public class HistoryActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             ListItemTranslationAdapter adapter = new ListItemTranslationAdapter(result);
-            ListView list = (ListView) findViewById(R.id.listWords);
+            ListView list = (ListView) getActivity().findViewById(R.id.listWords);
             list.setAdapter(adapter);
         }
     }

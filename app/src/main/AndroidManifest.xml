@@ -30,10 +30,6 @@
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name=".HistoryActivity"
-            android:label="@string/title_activity_history" >
-        </activity>
-        <activity
             android:name=".ArticleActivity"
             android:label="@string/title_activity_article" >
         </activity>
