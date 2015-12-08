@@ -15,11 +15,11 @@ import android.view.MenuItem;
 
 import dbservice.DbService;
 import ru.mail.park.android_wikipedia.fragments.ArticleFragment;
+import ru.mail.park.android_wikipedia.fragments.MainFragment;
 import wikipedia.Article;
 
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
-    private DbService dbService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,6 @@ public class BaseActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dbService = ((ApplicationModified) getApplication()).getDbService();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.base_activity);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -39,7 +38,9 @@ public class BaseActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        new GetArticleAsyncTask().execute();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.fragment_container, MainFragment.newInstance());
+        transaction.commit();
     }
 
 
@@ -105,28 +106,5 @@ public class BaseActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.base_activity);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-
-    private class GetArticleAsyncTask extends AsyncTask<String, Void, Void> {
-        private Article article;
-
-        @Override
-        protected Void doInBackground(String... params) {
-            if (params.length == 0) {
-                article = dbService.getRandomArticle();
-            } else {
-                article = dbService.getArticleByTitle(params[0]);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.fragment_container, ArticleFragment.newInstance(article.getTitle()));
-            transaction.commit();
-        }
     }
 }
