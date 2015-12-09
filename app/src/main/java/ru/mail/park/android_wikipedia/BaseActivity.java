@@ -89,13 +89,7 @@ public class BaseActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camara) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_settings) {
+        if (id == R.id.nav_settings) {
             setFragment(SettingsFragment.newInstance());
         } else if (id == R.id.nav_share) {
 
@@ -119,6 +113,7 @@ public class BaseActivity extends AppCompatActivity
             transaction.remove(temp);
         }
         transaction.add(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 }
