@@ -37,13 +37,13 @@ public class SavedArticlesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
         }
-        new GetSavedArticlesNameAsyncTask().execute();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        new GetSavedArticlesNameAsyncTask().execute();
         return inflater.inflate(R.layout.fragment_saved_articles, container, false);
     }
 
