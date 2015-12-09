@@ -1,12 +1,17 @@
 package ru.mail.park.android_wikipedia;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class PreloaderActivity extends AppCompatActivity {
     Handler handler;
@@ -28,6 +33,20 @@ public class PreloaderActivity extends AppCompatActivity {
                 Intent i = new Intent(PreloaderActivity.this, BaseActivity.class);
                 startActivity(i);
                 finish();
+            }
+        }, 10000);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (ContextCompat.checkSelfPermission(PreloaderActivity.this,
+                        Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED) {
+                    Toast.makeText(getApplication(), "Permision denied", Toast.LENGTH_LONG).show();
+                    ActivityCompat.requestPermissions(PreloaderActivity.this,
+                            new String[]{Manifest.permission.WRITE_CALENDAR, Manifest.permission.SEND_SMS},
+                            1);
+                } else {
+                    Toast.makeText(getApplication(), "Permision granted", Toast.LENGTH_LONG).show();
+                }
             }
         }, 500);
     }
