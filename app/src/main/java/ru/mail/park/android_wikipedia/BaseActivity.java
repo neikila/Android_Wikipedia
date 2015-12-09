@@ -41,9 +41,9 @@ public class BaseActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment_container, MainFragment.newInstance());
-        transaction.commit();
+        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
+            setFragment(MainFragment.newInstance());
+        }
     }
 
 
@@ -114,7 +114,9 @@ public class BaseActivity extends AppCompatActivity
     private void setFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment temp = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        transaction.remove(temp);
+        if (temp != null) {
+            transaction.remove(temp);
+        }
         transaction.add(R.id.fragment_container, fragment);
         transaction.commit();
     }
