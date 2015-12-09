@@ -19,6 +19,7 @@ import ru.mail.park.android_wikipedia.fragments.ArticleFragment;
 import ru.mail.park.android_wikipedia.fragments.HistoryFragment;
 import ru.mail.park.android_wikipedia.fragments.MainFragment;
 import ru.mail.park.android_wikipedia.fragments.SavedArticlesFragment;
+import ru.mail.park.android_wikipedia.fragments.SettingsFragment;
 import wikipedia.Article;
 
 public class BaseActivity extends AppCompatActivity
@@ -94,8 +95,8 @@ public class BaseActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
-
+        } else if (id == R.id.nav_settings) {
+            setFragment(SettingsFragment.newInstance());
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
