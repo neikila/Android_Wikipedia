@@ -42,7 +42,7 @@ public class PreloaderActivity extends AppCompatActivity {
                         Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED) {
                     Toast.makeText(getApplication(), "Permision denied", Toast.LENGTH_LONG).show();
                     ActivityCompat.requestPermissions(PreloaderActivity.this,
-                            new String[]{Manifest.permission.WRITE_CALENDAR, Manifest.permission.SEND_SMS},
+                            new String[]{Manifest.permission.WRITE_CALENDAR, Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS},
                             1);
                 } else {
                     Toast.makeText(getApplication(), "Permision granted", Toast.LENGTH_LONG).show();
