@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,6 +18,7 @@ import dbservice.DbService;
 import ru.mail.park.android_wikipedia.fragments.ArticleFragment;
 import ru.mail.park.android_wikipedia.fragments.HistoryFragment;
 import ru.mail.park.android_wikipedia.fragments.MainFragment;
+import ru.mail.park.android_wikipedia.fragments.SavedArticlesFragment;
 import wikipedia.Article;
 
 public class BaseActivity extends AppCompatActivity
@@ -99,13 +101,21 @@ public class BaseActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         } else if (id == R.id.nav_history) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, HistoryFragment.newInstance());
-            transaction.commit();
+            setFragment(HistoryFragment.newInstance());
+        } else if (id == R.id.nav_saved_articles) {
+            setFragment(SavedArticlesFragment.newInstance());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.base_activity);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        Fragment temp = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        transaction.remove(temp);
+        transaction.add(R.id.fragment_container, fragment);
+        transaction.commit();
     }
 }

@@ -15,12 +15,18 @@ public class DbServiceStubImpl implements DbService {
     List <String> requestedArticles;
     Map<String, Article> articleMap;
 
+    List <String> savedArticles;
+    Map<String, Article> savedArticleMap;
+
     public DbServiceStubImpl() {
         requestedArticles = new ArrayList<>();
         articleMap = new HashMap<>();
 
-        Article article = new Article("Test article");
-        saveArticle(article);
+        savedArticles = new ArrayList<>();
+        savedArticleMap = new HashMap<>();
+
+        saveArticleInHistory(new Article("Test article"));
+        saveArticle(new Article("Saved test article"));
     }
 
     @Override
@@ -39,9 +45,25 @@ public class DbServiceStubImpl implements DbService {
     }
 
     @Override
-    public void saveArticle(Article article) {
+    public List<String> getSavedArticlesNames(int length) {
+        return savedArticles.subList(0, length);
+    }
+
+    @Override
+    public List<String> getSavedArticlesName() {
+        return getSavedArticlesNames(savedArticles.size());
+    }
+
+    @Override
+    public void saveArticleInHistory(Article article) {
         requestedArticles.add(article.getTitle());
         articleMap.put(article.getTitle(), article);
+    }
+
+    @Override
+    public void saveArticle(Article article) {
+        savedArticles.add(article.getTitle());
+        savedArticleMap.put(article.getTitle(), article);
     }
 
     @Override

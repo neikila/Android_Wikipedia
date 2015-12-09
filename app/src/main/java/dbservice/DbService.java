@@ -14,6 +14,11 @@ public interface DbService {
     List<String> getArticlesNameFromHistory();
     List<String> getArticlesNameFromHistory(int length);
 
+    List<String> getSavedArticlesName();
+    List<String> getSavedArticlesNames(int length);
+
+    void saveArticleInHistory(Article article);
+
     void saveArticle(Article article);
 
     Article getArticleByTitle(String title);

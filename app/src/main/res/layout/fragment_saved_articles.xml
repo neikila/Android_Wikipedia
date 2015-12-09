@@ -1,7 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.mail.park.android_wikipedia.fragments.HistoryFragment">
+    tools:context="ru.mail.park.android_wikipedia.fragments.SavedArticlesFragment">
+
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -10,8 +11,8 @@
             android:id="@+id/hello_world"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="Hello from history fragment" />
+            android:gravity="center"
+            android:text="Hello from saved articles fragment" />
 
         <ListView
             android:id="@+id/listWords"

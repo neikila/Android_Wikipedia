@@ -15,6 +15,10 @@
             android:icon="@android:drawable/star_big_on"
             android:title="History" />
         <item
+            android:id="@+id/nav_saved_articles"
+            android:icon="@android:drawable/star_big_on"
+            android:title="Saved" />
+        <item
             android:id="@+id/nav_slideshow"
             android:icon="@android:drawable/ic_menu_slideshow"
             android:title="Slideshow" />
