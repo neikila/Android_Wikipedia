@@ -91,8 +91,8 @@ public class BaseActivity extends AppCompatActivity
 
         if (id == R.id.nav_settings) {
             setFragment(SettingsFragment.newInstance());
-        } else if (id == R.id.nav_share) {
-
+        } else if (id == R.id.nav_main) {
+            setFragment(MainFragment.newInstance());
         } else if (id == R.id.nav_send) {
 
         } else if (id == R.id.nav_history) {
@@ -108,11 +108,7 @@ public class BaseActivity extends AppCompatActivity
 
     private void setFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        Fragment temp = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (temp != null) {
-            transaction.remove(temp);
-        }
-        transaction.add(R.id.fragment_container, fragment);
+        transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }

@@ -34,12 +34,12 @@ public class MainFragment extends Fragment {
         if (getArguments() != null) {
             // TODO пока пусто
         }
-        new GetArticleAsyncTask().execute();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        new GetArticleAsyncTask().execute();
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
