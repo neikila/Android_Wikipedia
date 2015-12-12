@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public interface MediaWikiApi {
 
-    @GET("")
+    @GET("/")
     Response getArticleByTitle(@QueryMap Map<String, String> parameters);
 
 }
