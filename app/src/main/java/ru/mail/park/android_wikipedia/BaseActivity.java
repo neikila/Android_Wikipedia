@@ -22,6 +22,8 @@ import ru.mail.park.android_wikipedia.fragments.SavedArticlesFragment;
 import ru.mail.park.android_wikipedia.fragments.SettingsFragment;
 import wikipedia.Article;
 
+
+
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
