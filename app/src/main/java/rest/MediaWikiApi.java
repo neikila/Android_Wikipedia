@@ -14,4 +14,8 @@ public interface MediaWikiApi {
     @GET("/")
     Response getArticleByTitle(@QueryMap Map<String, String> parameters);
 
+
+    @GET("/")
+    Response getListOfArticle(@QueryMap Map<String, String> parameters);
+
 }
