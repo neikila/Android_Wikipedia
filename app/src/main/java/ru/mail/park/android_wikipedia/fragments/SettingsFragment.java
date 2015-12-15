@@ -51,7 +51,14 @@ public class SettingsFragment extends Fragment {
                 new CleanDatabaseAsyncTask().execute();
             }
         });
+        getActivity().findViewById(R.id.search).setVisibility(View.INVISIBLE);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().findViewById(R.id.search).setVisibility(View.VISIBLE);
     }
 
     private class CleanDatabaseAsyncTask extends AsyncTask<String, Void, Void> {
