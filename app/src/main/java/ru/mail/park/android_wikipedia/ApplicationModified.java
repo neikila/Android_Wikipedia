@@ -29,6 +29,8 @@ public class ApplicationModified extends Application {
         dbService.clean();
         dbService.saveArticleInHistory(new Article("Test article", "Test article/1", "qwe.com/1"));
         dbService.saveArticle(new Article("Saved test article", "Saved test article/1", "qwe.com/2"));
+        dbService.saveArticleInHistory(new Article("Test article1", "Test article1/1", "qwe.com1/1"));
+        dbService.saveArticle(new Article("Saved test article1", "Saved test article2/1", "qwe.com2/2"));
     }
 
     public DbService getDbService() {
