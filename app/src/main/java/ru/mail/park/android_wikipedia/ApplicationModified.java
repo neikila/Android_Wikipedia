@@ -6,6 +6,7 @@ import dbservice.DbHelper;
 import dbservice.DbService;
 import dbservice.DbServiceImpl;
 import dbservice.DbServiceStubImpl;
+import wikipedia.Article;
 
 //import com.squareup.otto.Bus;
 //import com.squareup.otto.ThreadEnforcer;
@@ -20,8 +21,10 @@ public class ApplicationModified extends Application {
     @Override
     public void onCreate() {
 //        bus = new Bus(ThreadEnforcer.ANY);
-        dbService = new DbServiceImpl(this);
         super.onCreate();
+        dbService = new DbServiceImpl(this);
+        dbService.saveArticleInHistory(new Article("Test article", "Test article/1", "qwe.com/1"));
+        dbService.saveArticle(new Article("Saved test article", "Saved test article/1", "qwe.com/2"));
     }
 
     public DbService getDbService() {
