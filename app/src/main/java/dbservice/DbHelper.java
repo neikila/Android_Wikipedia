@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import dbservice.Contracts.ArticleContract;
-import dbservice.Contracts.HistoryOfSearchContract;
+import dbservice.contracts.ArticleContract;
+import dbservice.contracts.HistoryOfSearchContract;
 
 /**
  * Created by ivan on 15.12.15.

@@ -1,4 +1,4 @@
-package dbservice.Contracts;
+package dbservice.contracts;
 
 import android.provider.BaseColumns;
 

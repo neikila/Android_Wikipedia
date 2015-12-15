@@ -16,11 +16,11 @@ public class MyIntentService extends IntentService {
     public MyIntentService() {
         super("MyIntentService");
         serviceHelper = new ServiceHelper();
-        dbService = new DbServiceStubImpl();
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        dbService = ((ApplicationModified)getApplication()).getDbService();
         if (intent != null) {
             final String action = intent.getAction();
             if (ServiceHelper.ACTION_GET_ARTICLE.equals(action)) {

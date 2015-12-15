@@ -5,11 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import dbservice.Contracts.ArticleContract.ArticleEntry;
-import dbservice.Contracts.HistoryOfSearchContract.HistoryOfSearchEntry;
+import dbservice.contracts.ArticleContract.ArticleEntry;
+import dbservice.contracts.HistoryOfSearchContract.HistoryOfSearchEntry;
 import wikipedia.Article;
 
 /**
@@ -28,22 +29,68 @@ public class DbServiceImpl implements DbService {
     }
 
     @Override
-    public List<String> getArticlesNameFromHistory() {
+    public List<Article> getArticlesFromHistory() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                HistoryOfSearchEntry.COLUMN_NAME_TITLE,
+                HistoryOfSearchEntry.COLUMN_NAME_LOGO,
+                HistoryOfSearchEntry.COLUMN_NAME_LINK
+        };
+
+        Cursor c = db.query(HistoryOfSearchEntry.TABLE_NAME, projection, null, null, null, null, null);
+        c.moveToFirst();
+        List<Article> articles = new ArrayList<>();
+        while(!c.isAfterLast()) {
+            Article article = new Article(
+                    c.getString(c.getColumnIndex(HistoryOfSearchEntry.COLUMN_NAME_TITLE)),
+                    c.getString(c.getColumnIndex(HistoryOfSearchEntry.COLUMN_NAME_LOGO)),
+                    c.getString(c.getColumnIndex(HistoryOfSearchEntry.COLUMN_NAME_LINK))
+            );
+            articles.add(article);
+            c.moveToNext();
+        }
+
+        c.close();
+        return articles;
+    }
+
+    @Override
+    public List<Article> getArticlesFromHistory(int length) {
         return null;
     }
 
     @Override
-    public List<String> getArticlesNameFromHistory(int length) {
-        return null;
+    public List<Article> getSavedArticles() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                ArticleEntry.COLUMN_NAME_TITLE,
+                ArticleEntry.COLUMN_NAME_LOGO,
+                ArticleEntry.COLUMN_NAME_LINK,
+                ArticleEntry.COLUMN_NAME_BODY
+        };
+
+        Cursor c = db.query(ArticleEntry.TABLE_NAME, projection, null, null, null, null, null);
+        c.moveToFirst();
+        List<Article> articles = new ArrayList<>();
+        while(!c.isAfterLast()) {
+            Article article = new Article(
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_TITLE)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LOGO)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LINK)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_BODY))
+            );
+            articles.add(article);
+            c.moveToNext();
+        }
+
+        c.close();
+        return articles;
     }
 
     @Override
-    public List<String> getSavedArticlesName() {
-        return null;
-    }
-
-    @Override
-    public List<String> getSavedArticlesNames(int length) {
+    public List<Article> getSavedArticles(int length) {
         Calendar calendar =  Calendar.getInstance();
         calendar.getTimeInMillis();
         return null;
