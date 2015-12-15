@@ -80,9 +80,9 @@ public class HistoryFragment extends Fragment {
         @Override
         protected Void doInBackground(String... params) {
             if (params.length > 0) {
-                result = dbService.getArticlesNameFromHistory(Integer.parseInt(params[0]));
+//                result = dbService.getArticlesNameFromHistory(Integer.parseInt(params[0]));
             } else {
-                result = dbService.getArticlesNameFromHistory();
+//                result = dbService.getArticlesNameFromHistory();
             }
             if (result == null) {
                 result = new ArrayList<>();

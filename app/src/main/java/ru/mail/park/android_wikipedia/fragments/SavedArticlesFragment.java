@@ -79,9 +79,9 @@ public class SavedArticlesFragment extends Fragment {
         @Override
         protected Void doInBackground(String... params) {
             if (params.length > 0) {
-                result = dbService.getSavedArticlesNames(Integer.parseInt(params[0]));
+//                result = dbService.getSavedArticlesNames(Integer.parseInt(params[0]));
             } else {
-                result = dbService.getSavedArticlesName();
+//                result = dbService.getSavedArticlesName();
             }
             if (result == null) {
                 result = new ArrayList<>();

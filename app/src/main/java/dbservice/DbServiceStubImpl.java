@@ -35,22 +35,30 @@ public class DbServiceStubImpl implements DbService {
     }
 
     @Override
-    public List<String> getArticlesNameFromHistory(int length) {
-        return requestedArticles.subList(0, length);
+    public List<Article> getArticlesNameFromHistory(int length) {
+        List <Article> result = new ArrayList<>();
+        for (String title: requestedArticles.subList(0, length)) {
+            result.add(new Article(title));
+        }
+        return result;
     }
 
     @Override
-    public List<String> getArticlesNameFromHistory() {
+    public List<Article> getArticlesNameFromHistory() {
         return getArticlesNameFromHistory(requestedArticles.size());
     }
 
     @Override
-    public List<String> getSavedArticlesNames(int length) {
-        return savedArticles.subList(0, length);
+    public List<Article> getSavedArticlesNames(int length) {
+        List <Article> result = new ArrayList<>();
+        for (String title: savedArticles.subList(0, length)) {
+            result.add(new Article(title));
+        }
+        return result;
     }
 
     @Override
-    public List<String> getSavedArticlesName() {
+    public List<Article> getSavedArticlesName() {
         return getSavedArticlesNames(savedArticles.size());
     }
 

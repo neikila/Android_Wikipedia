@@ -1,19 +1,33 @@
 package utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import wikipedia.Article;
 
 /**
  * Created by neikila on 15.12.15.
  */
 public class ResultArticle extends OttoMessage {
-    private Article article;
+    private List<Article> articles;
 
     public ResultArticle(Article article) {
         messageType = MessageType.ResultArticle;
-        this.article = article;
+        List<Article> list = new ArrayList<>();
+        list.add(article);
+        this.articles = list;
+    }
+
+    public ResultArticle(List<Article> articles) {
+        this.articles = articles;
+        messageType = MessageType.ResultArticle;
     }
 
     public Article getArticle() {
-        return article;
+        return articles.get(0);
+    }
+
+    public List<Article> getArticles() {
+        return articles;
     }
 }

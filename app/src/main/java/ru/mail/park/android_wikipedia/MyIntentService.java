@@ -4,13 +4,13 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 
+import java.util.List;
+
 import dbservice.DbService;
 import dbservice.DbServiceStubImpl;
 import wikipedia.Article;
 
 public class MyIntentService extends IntentService {
-    // TODO: Rename actions, choose action names that describe tasks that this
-    // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private ServiceHelper serviceHelper;
     private DbService dbService;
 
@@ -29,6 +29,8 @@ public class MyIntentService extends IntentService {
                 handleGetArticle(title);
             } else if (ServiceHelper.ACTION_GET_RANDOM_ARTICLE.equals(action)) {
                 handleGetRandomArticle();
+            } else if (ServiceHelper.ACTION_GET_HISTORY.equals(action)) {
+                handleGetHistory(intent.getIntExtra(ServiceHelper.AMOUNT ,0));
             }
         }
     }
@@ -41,5 +43,15 @@ public class MyIntentService extends IntentService {
     private void handleGetRandomArticle() {
         Article article = dbService.getRandomArticle();
         serviceHelper.returnArticle(getApplication(), article);
+    }
+
+    private void handleGetHistory(int amount) {
+        List<Article> result;
+        if (amount > 0) {
+            result = dbService.getArticlesNameFromHistory(amount);
+        } else {
+            result = dbService.getArticlesNameFromHistory();
+        }
+        serviceHelper.returnArticle(getApplication(), result);
     }
 }
