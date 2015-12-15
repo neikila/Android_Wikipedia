@@ -25,8 +25,8 @@ public class DbServiceStubImpl implements DbService {
         savedArticles = new ArrayList<>();
         savedArticleMap = new HashMap<>();
 
-        saveArticleInHistory(new Article("Test article", "Test article/1"));
-        saveArticle(new Article("Saved test article", "Saved test article/1"));
+        saveArticleInHistory(new Article("Test article", "Test article/1", "qwe.com/1"));
+        saveArticle(new Article("Saved test article", "Saved test article/1", "qwe.com/2"));
     }
 
     @Override

@@ -26,12 +26,16 @@ public class DbHelper extends SQLiteOpenHelper {
 
     //Пока оставим вот так, затем, когда версия бд станет более менее стабильной, переделаем TODO remove
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(ArticleContract.SQL_DELETE_ENTRIES);
-        db.execSQL(HistoryOfSearchContract.SQL_DELETE_ENTRIES);
+        db.execSQL(ArticleContract.SQL_DROP_TABLE);
+        db.execSQL(HistoryOfSearchContract.SQL_DROP_TABLE);
         onCreate(db);
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+    public void cleanArticle() {
+        getWritableDatabase().execSQL(ArticleContract.SQL_DELETE_ENTRIES);
     }
 }
