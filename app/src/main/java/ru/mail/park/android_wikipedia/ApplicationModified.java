@@ -2,6 +2,9 @@ package ru.mail.park.android_wikipedia;
 
 import android.app.Application;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
+
 import dbservice.DbHelper;
 import dbservice.DbService;
 import dbservice.DbServiceImpl;
@@ -15,12 +18,12 @@ import wikipedia.Article;
  * Created by neikila on 29.09.15.
  */
 public class ApplicationModified extends Application {
-//    private Bus bus;
+    private Bus bus;
     private DbService dbService;
 
     @Override
     public void onCreate() {
-//        bus = new Bus(ThreadEnforcer.ANY);
+        bus = new Bus(ThreadEnforcer.ANY);
         super.onCreate();
         dbService = new DbServiceImpl(this);
         dbService.clean();
@@ -32,7 +35,7 @@ public class ApplicationModified extends Application {
         return dbService;
     }
 
-//    public Bus getBus() {
-//        return bus;
-//    }
+    public Bus getBus() {
+        return bus;
+    }
 }

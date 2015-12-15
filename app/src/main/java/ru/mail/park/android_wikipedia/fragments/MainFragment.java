@@ -2,19 +2,25 @@ package ru.mail.park.android_wikipedia.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import dbservice.DbService;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+
+
 import ru.mail.park.android_wikipedia.ApplicationModified;
 import ru.mail.park.android_wikipedia.R;
-import wikipedia.Article;
+import ru.mail.park.android_wikipedia.ServiceHelper;
+import utils.ResultArticle;
 
 public class MainFragment extends Fragment {
-    private DbService dbService;
+    private Handler handler;
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
@@ -27,9 +33,23 @@ public class MainFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Subscribe
+    public void react(final ResultArticle message) {
+        if (handler != null) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.add(R.id.fragment_article, ArticleFragment.newInstance(message.getArticle().getTitle()));
+                    transaction.commit();
+                }
+            });
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        dbService = ((ApplicationModified) getActivity().getApplication()).getDbService();
+        handler = new Handler();
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             // TODO пока пусто
@@ -39,29 +59,17 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        new GetArticleAsyncTask().execute();
+        Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
+        bus.register(this);
+
+        new ServiceHelper().getRandomArticle(this.getActivity());
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
-    private class GetArticleAsyncTask extends AsyncTask<String, Void, Void> {
-        private Article article;
-
-        @Override
-        protected Void doInBackground(String... params) {
-            if (params.length == 0) {
-                article = dbService.getRandomArticle();
-            } else {
-                article = dbService.getArticleByTitle(params[0]);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.add(R.id.fragment_article, ArticleFragment.newInstance(article.getTitle()));
-            transaction.commit();
-        }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
+        bus.unregister(this);
     }
 }

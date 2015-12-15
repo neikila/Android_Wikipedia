@@ -11,11 +11,11 @@ public interface DbService {
 
     void clean();
 
-    List<String> getArticlesNameFromHistory();
-    List<String> getArticlesNameFromHistory(int length);
+    List<Article> getArticlesFromHistory();
+    List<Article> getArticlesFromHistory(int length);
 
-    List<String> getSavedArticlesName();
-    List<String> getSavedArticlesNames(int length);
+    List<Article> getSavedArticles();
+    List<Article> getSavedArticles(int length);
 
     void saveArticleInHistory(Article article);
 
