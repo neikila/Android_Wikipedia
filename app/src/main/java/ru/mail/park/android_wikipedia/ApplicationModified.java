@@ -2,7 +2,9 @@ package ru.mail.park.android_wikipedia;
 
 import android.app.Application;
 
+import dbservice.DbHelper;
 import dbservice.DbService;
+import dbservice.DbServiceImpl;
 import dbservice.DbServiceStubImpl;
 
 //import com.squareup.otto.Bus;
@@ -18,7 +20,7 @@ public class ApplicationModified extends Application {
     @Override
     public void onCreate() {
 //        bus = new Bus(ThreadEnforcer.ANY);
-        dbService = new DbServiceStubImpl();
+        dbService = new DbServiceImpl(this);
         super.onCreate();
     }
 

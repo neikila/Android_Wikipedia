@@ -18,7 +18,7 @@ import wikipedia.Article;
 public class DbServiceImpl implements DbService {
     private DbHelper dbHelper;
 
-    DbServiceImpl(Context context) {
+    public DbServiceImpl(Context context) {
         dbHelper = new DbHelper(context);
     }
 
