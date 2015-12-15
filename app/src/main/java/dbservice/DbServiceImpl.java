@@ -56,7 +56,8 @@ public class DbServiceImpl implements DbService {
         ContentValues values = new ContentValues();
         values.put(HistoryOfSearchEntry.COLUMN_NAME_TITLE, article.getTitle());
         values.put(HistoryOfSearchEntry.COLUMN_NAME_LINK, article.getLink());
-        values.put(HistoryOfSearchEntry.COLUMN_NAME_logo, article.getLogo());
+        values.put(HistoryOfSearchEntry.COLUMN_NAME_LOGO, article.getLogo());
+        values.put(HistoryOfSearchEntry.COLUMN_NAME_TIME, Calendar.getInstance().getTimeInMillis());
 
         db.insert(HistoryOfSearchEntry.TABLE_NAME, null, values);
     }
@@ -70,6 +71,7 @@ public class DbServiceImpl implements DbService {
         values.put(ArticleEntry.COLUMN_NAME_BODY, article.getBody());
         values.put(ArticleEntry.COLUMN_NAME_LOGO, article.getLogo());
         values.put(ArticleEntry.COLUMN_NAME_LINK, article.getLink());
+        values.put(ArticleEntry.COLUMN_NAME_TIME, Calendar.getInstance().getTimeInMillis());
 
         db.insert(ArticleEntry.TABLE_NAME, null, values);
     }

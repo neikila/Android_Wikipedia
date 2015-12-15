@@ -15,9 +15,11 @@ public final class ArticleContract {
         public static final String COLUMN_NAME_BODY = "body";
         public static final String COLUMN_NAME_LOGO = "logo";
         public static final String COLUMN_NAME_LINK = "link";
+        public static final String COLUMN_NAME_TIME = "time";
     }
 
     private static final String TEXT_TYPE = "TEXT";
+    private static final String INT_TYPE = "INTEGER";
     private static final String COMMA_SEP = ",";
 
     public static final String SQL_CREATE_ENTRIES =
@@ -26,7 +28,8 @@ public final class ArticleContract {
             ArticleEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
             ArticleEntry.COLUMN_NAME_BODY + TEXT_TYPE + COMMA_SEP +
             ArticleEntry.COLUMN_NAME_LOGO + TEXT_TYPE + COMMA_SEP +
-            ArticleEntry.COLUMN_NAME_LINK + TEXT_TYPE + " )";
+            ArticleEntry.COLUMN_NAME_LINK + TEXT_TYPE + COMMA_SEP +
+            ArticleEntry.COLUMN_NAME_TIME + INT_TYPE + " )";
 
     public static final String SQL_DROP_TABLE = "DROP TABLE IF EXIST " + ArticleEntry.TABLE_NAME;
 
