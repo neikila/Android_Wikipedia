@@ -73,14 +73,14 @@ public class BaseActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         this.closeOptionsMenu();
-        int id = item.getItemId();
-        Intent i;
-        switch (id){
-            case R.id.menu_settings:
-                return true;
-            case R.id.menu_history:
-                return true;
-        }
+//        int id = item.getItemId();
+//        Intent i;
+//        switch (id){
+//            case R.id.menu_settings:
+//                return true;
+//            case R.id.menu_history:
+//                return true;
+//        }
         //noinspection SimplifiableIfStatement
         return true;
     }

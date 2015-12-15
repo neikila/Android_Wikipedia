@@ -25,7 +25,8 @@ public class MyIntentService extends IntentService {
             final String action = intent.getAction();
             if (ServiceHelper.ACTION_GET_ARTICLE.equals(action)) {
                 final String title = intent.getStringExtra(ServiceHelper.TITLE);
-                handleGetArticle(title);
+                // TODO вернуть когда появится возможность проверить безопасно наличие статьи в базе
+//                handleGetArticle(title);
             } else if (ServiceHelper.ACTION_GET_RANDOM_ARTICLE.equals(action)) {
                 handleGetRandomArticle();
             } else if (ServiceHelper.ACTION_GET_HISTORY.equals(action)) {
