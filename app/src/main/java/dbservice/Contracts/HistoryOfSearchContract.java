@@ -27,6 +27,4 @@ public final class HistoryOfSearchContract {
 
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXIST " + HistoryOfSearchEntry.TABLE_NAME;
-
-    //todo add methods
 }

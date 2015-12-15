@@ -28,6 +28,4 @@ public final class ArticleContract {
 
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXIST " + ArticleEntry.TABLE_NAME;
-
-    //todo add methods
 }
