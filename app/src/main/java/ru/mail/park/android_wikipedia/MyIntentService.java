@@ -2,7 +2,6 @@ package ru.mail.park.android_wikipedia;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.Context;
 
 import java.util.List;
 
@@ -50,9 +49,9 @@ public class MyIntentService extends IntentService {
     private void handleGetHistory(int amount) {
         List<Article> result;
         if (amount > 0) {
-            result = dbService.getArticlesNameFromHistory(amount);
+            result = dbService.getArticlesFromHistory(amount);
         } else {
-            result = dbService.getArticlesNameFromHistory();
+            result = dbService.getArticlesFromHistory();
         }
         serviceHelper.returnArticle(getApplication(), result);
     }
@@ -60,9 +59,9 @@ public class MyIntentService extends IntentService {
     private void handleGetSaved(int amount) {
         List<Article> result;
         if (amount > 0) {
-            result = dbService.getSavedArticlesNames(amount);
+            result = dbService.getSavedArticles(amount);
         } else {
-            result = dbService.getSavedArticlesName();
+            result = dbService.getSavedArticles();
         }
         serviceHelper.returnArticle(getApplication(), result);
     }

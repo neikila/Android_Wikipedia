@@ -35,7 +35,7 @@ public class DbServiceStubImpl implements DbService {
     }
 
     @Override
-    public List<Article> getArticlesNameFromHistory(int length) {
+    public List<Article> getArticlesFromHistory(int length) {
         List <Article> result = new ArrayList<>();
         for (String title: requestedArticles.subList(0, length)) {
             result.add(new Article(title));
@@ -44,12 +44,12 @@ public class DbServiceStubImpl implements DbService {
     }
 
     @Override
-    public List<Article> getArticlesNameFromHistory() {
-        return getArticlesNameFromHistory(requestedArticles.size());
+    public List<Article> getArticlesFromHistory() {
+        return getArticlesFromHistory(requestedArticles.size());
     }
 
     @Override
-    public List<Article> getSavedArticlesNames(int length) {
+    public List<Article> getSavedArticles(int length) {
         List <Article> result = new ArrayList<>();
         for (String title: savedArticles.subList(0, length)) {
             result.add(new Article(title));
@@ -58,8 +58,8 @@ public class DbServiceStubImpl implements DbService {
     }
 
     @Override
-    public List<Article> getSavedArticlesName() {
-        return getSavedArticlesNames(savedArticles.size());
+    public List<Article> getSavedArticles() {
+        return getSavedArticles(savedArticles.size());
     }
 
     @Override
