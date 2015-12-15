@@ -3,6 +3,8 @@ package ru.mail.park.android_wikipedia;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 

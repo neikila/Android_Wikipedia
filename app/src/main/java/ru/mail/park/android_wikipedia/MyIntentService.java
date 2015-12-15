@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Context;
 
 import dbservice.DbService;
+import dbservice.DbServiceStubImpl;
 import wikipedia.Article;
 
 public class MyIntentService extends IntentService {
@@ -16,7 +17,7 @@ public class MyIntentService extends IntentService {
     public MyIntentService() {
         super("MyIntentService");
         serviceHelper = new ServiceHelper();
-        dbService = ((ApplicationModified)getApplication()).getDbService();
+        dbService = new DbServiceStubImpl();
     }
 
     @Override
@@ -26,12 +27,19 @@ public class MyIntentService extends IntentService {
             if (ServiceHelper.ACTION_GET_ARTICLE.equals(action)) {
                 final String title = intent.getStringExtra(ServiceHelper.TITLE);
                 handleGetArticle(title);
+            } else if (ServiceHelper.ACTION_GET_RANDOM_ARTICLE.equals(action)) {
+                handleGetRandomArticle();
             }
         }
     }
 
     private void handleGetArticle(String title) {
         Article article = dbService.getArticleByTitle(title);
+        serviceHelper.returnArticle(getApplication(), article);
+    }
+
+    private void handleGetRandomArticle() {
+        Article article = dbService.getRandomArticle();
         serviceHelper.returnArticle(getApplication(), article);
     }
 }
