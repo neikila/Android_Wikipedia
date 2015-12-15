@@ -9,18 +9,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 
-import dbservice.DbService;
 import ru.mail.park.android_wikipedia.ApplicationModified;
 import ru.mail.park.android_wikipedia.R;
 import ru.mail.park.android_wikipedia.ServiceHelper;
 import utils.ResultArticle;
-import wikipedia.Article;
 
 public class MainFragment extends Fragment {
     private Handler handler;

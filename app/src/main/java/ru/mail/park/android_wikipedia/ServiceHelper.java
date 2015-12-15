@@ -41,6 +41,18 @@ public class ServiceHelper {
         return id.incrementAndGet();
     }
 
+    public long getArticlesFromHistory(Context context, int amount) {
+        Intent search = new Intent(context, MyIntentService.class);
+        search.setAction(ACTION_GET_HISTORY);
+        search.putExtra(AMOUNT, amount);
+        context.startService(search);
+        return id.incrementAndGet();
+    }
+
+    public long getArticlesFromHistory(Context context) {
+        return getArticlesFromHistory(context, -1);
+    }
+
     public void returnArticle(Application application, Article article) {
         Bus bus = ((ApplicationModified)application).getBus();
         bus.post(new ResultArticle(article));
