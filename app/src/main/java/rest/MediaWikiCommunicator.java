@@ -9,4 +9,6 @@ import java.io.IOException;
 public interface MediaWikiCommunicator {
 
     String getArticleByTitle(String title) throws IOException;
+
+    String getListOfArticle(String searchWords) throws IOException;
 }

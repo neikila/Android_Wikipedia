@@ -1,20 +1,28 @@
 package rest;
 
+import retrofit.RestAdapter;
+import retrofit.client.Response;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-
 import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
-
-import retrofit.RestAdapter;
-import retrofit.client.Response;
 
 /**
  * Created by vasiliy on 12.12.15.
  */
+
+//https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&titles=Far_Eastern_Party&pithumbsize=500&format=xml -возвращет ссылку на картинку соответсвуещего размера к статье
+//размер можно задать
+
+//https://en.wikipedia.org/w/api.php?action=query&prop=images&titles=Far_Eastern_Party&format=xml сылки на все картинки картинки
+
+//https://en.wikipedia.org/w/api.php?action=query&prop=extlinks&titles=Far_Eastern_Party возвращает все внешние ссылки
+
+//https://en.wikipedia.org/w/api.php?action=query&titles=Far_Eastern_Party&prop=revisions&rvprop=content&format=json
+//https://en.wikipedia.org/w/api.php?action=query&titles=Far_Eastern_Party&prop=revisions&rvprop=content&format=xml
+//https://ru.wikipedia.org/w/api.php?action=opensearch&search=%EC%E0%F1%F2%E5%F0%20%E8%20%EC%E0%F0%E3%E0%F0%E8%F2%E0&prop=info&format=xml&inprop=url
 public class MediaWikiCommunicatorImpl implements MediaWikiCommunicator {
     private MediaWikiApi service;
     private RestAdapter retrofit;
@@ -24,20 +32,40 @@ public class MediaWikiCommunicatorImpl implements MediaWikiCommunicator {
         service = retrofit.create(MediaWikiApi.class);
     }
 
+    //метод возвращает xml в котором есть тело вики-текста сайта
     @Override
     public String getArticleByTitle(String title) {
         Map<String, String> parameters = new HashMap<String, String>();
-        //https://en.wikipedia.org/w/api.php?action=query&titles=Far_Eastern_Party&prop=revisions&rvprop=content&format=json
         parameters.put("action", "query");
         parameters.put("titles", title);
         parameters.put("prop", "revisions");
         parameters.put("rvprop", "content");
-        parameters.put("format", "json");
+        parameters.put("format", "xml");
         Response tmp = service.getArticleByTitle(parameters);
 
         String result = stringFromResponse(tmp);
         return result;
     }
+
+    //https://en.wikipedia.org/w/api.php?action=query&list=search&srwhat=text&srsearch=zorge&format=jsonfm&srlimit=50
+    // метод возвращает заголовки страниц с кратким оисанием удволетворяющих поисковому запросу, 10 результатов,
+    // также там можно найти заголовки по которым можно получить страницу используя метод  getArticleByTitle
+    @Override
+    public String getListOfArticle(String searchWords) {
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("action", "query");
+        parameters.put("list", "search");
+        parameters.put("srwhat", "text");
+        parameters.put("format", "xml");
+        parameters.put("srsearch", searchWords);
+
+        Response tmp = service.getListOfArticle(parameters);
+        String result = stringFromResponse(tmp);
+        return result;
+    }
+
+
+
 
     String stringFromResponse(Response response){
         BufferedReader reader = null;
