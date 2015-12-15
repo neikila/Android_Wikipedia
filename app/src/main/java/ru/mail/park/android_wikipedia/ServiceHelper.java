@@ -21,6 +21,7 @@ public class ServiceHelper {
     public static final String ACTION_GET_ARTICLE = "ru.mail.park.android_wikipedia.action.GET_ARTICLE";
     public static final String ACTION_GET_RANDOM_ARTICLE = "ru.mail.park.android_wikipedia.action.GET_RANDOM_ARTICLE";
     public static final String ACTION_GET_HISTORY = "ru.mail.park.android_wikipedia.action.GET_HISTORY";
+    public static final String ACTION_GET_SAVED_ARTICLES = "ru.mail.park.android_wikipedia.action.GET_SAVED_ARTICLES";
 
     public static final String TITLE = "TITLE";
     public static final String AMOUNT = "AMOUNT";
@@ -50,6 +51,18 @@ public class ServiceHelper {
     }
 
     public long getArticlesFromHistory(Context context) {
+        return getArticlesFromHistory(context, -1);
+    }
+
+    public long getSavedArticles(Context context, int amount) {
+        Intent search = new Intent(context, MyIntentService.class);
+        search.setAction(ACTION_GET_SAVED_ARTICLES);
+        search.putExtra(AMOUNT, amount);
+        context.startService(search);
+        return id.incrementAndGet();
+    }
+
+    public long getSavedArticles(Context context) {
         return getArticlesFromHistory(context, -1);
     }
 

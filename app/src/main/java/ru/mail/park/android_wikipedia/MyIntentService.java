@@ -31,6 +31,8 @@ public class MyIntentService extends IntentService {
                 handleGetRandomArticle();
             } else if (ServiceHelper.ACTION_GET_HISTORY.equals(action)) {
                 handleGetHistory(intent.getIntExtra(ServiceHelper.AMOUNT ,0));
+            } else if (ServiceHelper.ACTION_GET_SAVED_ARTICLES.equals(action)) {
+                handleGetHistory(intent.getIntExtra(ServiceHelper.AMOUNT ,0));
             }
         }
     }
@@ -51,6 +53,16 @@ public class MyIntentService extends IntentService {
             result = dbService.getArticlesNameFromHistory(amount);
         } else {
             result = dbService.getArticlesNameFromHistory();
+        }
+        serviceHelper.returnArticle(getApplication(), result);
+    }
+
+    private void handleGetSaved(int amount) {
+        List<Article> result;
+        if (amount > 0) {
+            result = dbService.getSavedArticlesNames(amount);
+        } else {
+            result = dbService.getSavedArticlesName();
         }
         serviceHelper.returnArticle(getApplication(), result);
     }
