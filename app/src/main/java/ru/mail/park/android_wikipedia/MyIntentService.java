@@ -31,7 +31,7 @@ public class MyIntentService extends IntentService {
             } else if (ServiceHelper.ACTION_GET_HISTORY.equals(action)) {
                 handleGetHistory(intent.getIntExtra(ServiceHelper.AMOUNT ,0));
             } else if (ServiceHelper.ACTION_GET_SAVED_ARTICLES.equals(action)) {
-                handleGetHistory(intent.getIntExtra(ServiceHelper.AMOUNT ,0));
+                handleGetSaved(intent.getIntExtra(ServiceHelper.AMOUNT ,0));
             }
         }
     }

@@ -63,7 +63,7 @@ public class ServiceHelper {
     }
 
     public long getSavedArticles(Context context) {
-        return getArticlesFromHistory(context, -1);
+        return getSavedArticles(context, -1);
     }
 
     public void returnArticle(Application application, Article article) {

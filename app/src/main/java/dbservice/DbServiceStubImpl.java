@@ -12,10 +12,10 @@ import wikipedia.Article;
  * Created by neikila on 16.11.15.
  */
 public class DbServiceStubImpl implements DbService {
-    List <String> requestedArticles;
+    List <Article> requestedArticles;
     Map<String, Article> articleMap;
 
-    List <String> savedArticles;
+    List <Article> savedArticles;
     Map<String, Article> savedArticleMap;
 
     public DbServiceStubImpl() {
@@ -36,11 +36,7 @@ public class DbServiceStubImpl implements DbService {
 
     @Override
     public List<Article> getArticlesFromHistory(int length) {
-        List <Article> result = new ArrayList<>();
-        for (String title: requestedArticles.subList(0, length)) {
-            result.add(new Article(title));
-        }
-        return result;
+        return requestedArticles.subList(0, length);
     }
 
     @Override
@@ -50,11 +46,7 @@ public class DbServiceStubImpl implements DbService {
 
     @Override
     public List<Article> getSavedArticles(int length) {
-        List <Article> result = new ArrayList<>();
-        for (String title: savedArticles.subList(0, length)) {
-            result.add(new Article(title));
-        }
-        return result;
+        return savedArticles.subList(0, length);
     }
 
     @Override
@@ -64,13 +56,13 @@ public class DbServiceStubImpl implements DbService {
 
     @Override
     public void saveArticleInHistory(Article article) {
-        requestedArticles.add(article.getTitle());
+        requestedArticles.add(article);
         articleMap.put(article.getTitle(), article);
     }
 
     @Override
     public void saveArticle(Article article) {
-        savedArticles.add(article.getTitle());
+        savedArticles.add(article);
         savedArticleMap.put(article.getTitle(), article);
     }
 
