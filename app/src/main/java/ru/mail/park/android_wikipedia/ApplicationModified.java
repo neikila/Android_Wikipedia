@@ -23,6 +23,7 @@ public class ApplicationModified extends Application {
 //        bus = new Bus(ThreadEnforcer.ANY);
         super.onCreate();
         dbService = new DbServiceImpl(this);
+        dbService.clean();
         dbService.saveArticleInHistory(new Article("Test article", "Test article/1", "qwe.com/1"));
         dbService.saveArticle(new Article("Saved test article", "Saved test article/1", "qwe.com/2"));
     }

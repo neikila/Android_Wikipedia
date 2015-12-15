@@ -37,5 +37,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public void cleanArticle() {
         getWritableDatabase().execSQL(ArticleContract.SQL_DELETE_ENTRIES);
+        getWritableDatabase().execSQL(HistoryOfSearchContract.SQL_DELETE_ENTRIES);
     }
 }

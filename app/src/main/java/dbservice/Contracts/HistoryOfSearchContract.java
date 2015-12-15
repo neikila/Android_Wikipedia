@@ -30,4 +30,6 @@ public final class HistoryOfSearchContract {
 
     public static final String SQL_DROP_TABLE =
             "DROP TABLE IF EXIST " + HistoryOfSearchEntry.TABLE_NAME;
+
+    public static final String SQL_DELETE_ENTRIES = "DELETE FROM " + HistoryOfSearchEntry.TABLE_NAME;
 }
