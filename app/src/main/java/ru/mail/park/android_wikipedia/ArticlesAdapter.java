@@ -1,6 +1,7 @@
 package ru.mail.park.android_wikipedia;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.mail.park.android_wikipedia.fragments.ArticleFragment;
 import utils.BitmapReady;
 import wikipedia.Article;
 /**
@@ -61,10 +63,19 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
     }
 
     @Override
-    public ArticleViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ArticleViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).
                 inflate(R.layout.article_card, viewGroup, false);
 
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent search = new Intent(viewGroup.getContext(), BaseActivity.class);
+                search.setAction("android.intent.action.OPEN_ARTICLE");
+                search.putExtra(ArticleFragment.ARTICLE_TITLE_TAG, "Saved test article");
+                viewGroup.getContext().startActivity(search);
+            }
+        });
         return new ArticleViewHolder(itemView);
     }
 

@@ -1,5 +1,6 @@
 package ru.mail.park.android_wikipedia.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import com.squareup.otto.Subscribe;
 
 import ru.mail.park.android_wikipedia.ApplicationModified;
 import ru.mail.park.android_wikipedia.ArticlesAdapter;
+import ru.mail.park.android_wikipedia.BaseActivity;
 import ru.mail.park.android_wikipedia.R;
 import ru.mail.park.android_wikipedia.ServiceHelper;
 import utils.OttoMessage;

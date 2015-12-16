@@ -21,15 +21,17 @@ public class MyIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        // TODO как получать базу
-//        dbService = ((ApplicationModified)getApplication()).getDbService();
         processor = new Processor(this);
         if (intent != null) {
             final String action = intent.getAction();
             if (ServiceHelper.ACTION_GET_ARTICLE.equals(action)) {
                 final String title = intent.getStringExtra(ServiceHelper.TITLE);
-                // TODO вернуть когда появится возможность проверить безопасно наличие статьи в базе
-//                handleGetArticle(title);
+//                 TODO вернуть когда появится возможность проверить безопасно наличие статьи в базе
+                try {
+                    handleGetArticle(title);
+                } catch (Exception e) {
+                    // TODO решить эту проблему
+                }
             } else if (ServiceHelper.ACTION_GET_RANDOM_ARTICLE.equals(action)) {
                 handleGetRandomArticle();
             } else if (ServiceHelper.ACTION_GET_HISTORY.equals(action)) {

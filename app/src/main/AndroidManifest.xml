@@ -22,11 +22,12 @@
         <activity
             android:name=".BaseActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
-        <activity
-            android:name=".ArticleActivity"
-            android:label="@string/title_activity_article" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.OPEN_ARTICLE" />
+            </intent-filter>
         </activity>
 
         <service

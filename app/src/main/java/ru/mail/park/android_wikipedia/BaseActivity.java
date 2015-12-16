@@ -1,5 +1,6 @@
 package ru.mail.park.android_wikipedia;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import ru.mail.park.android_wikipedia.fragments.ArticleFragment;
 import ru.mail.park.android_wikipedia.fragments.HistoryFragment;
 import ru.mail.park.android_wikipedia.fragments.MainFragment;
 import ru.mail.park.android_wikipedia.fragments.SavedArticlesFragment;
@@ -90,5 +92,12 @@ public class BaseActivity extends AppCompatActivity
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String title = intent.getStringExtra(ArticleFragment.ARTICLE_TITLE_TAG);
+        setFragment(ArticleFragment.newInstance(title));
     }
 }
