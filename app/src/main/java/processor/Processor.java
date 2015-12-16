@@ -2,7 +2,9 @@ package processor;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 
 import com.squareup.picasso.Picasso;
 
@@ -85,7 +87,7 @@ public class Processor {
         Bitmap logo = null;
         try {
             logo = Picasso.with(context)
-                    .load(R.drawable.test1)
+                    .load(R.drawable.wiki_icon)
                     .placeholder(R.drawable.test1)
                     .error(R.drawable.test1)
                     .resize(200, 200)

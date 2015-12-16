@@ -9,15 +9,18 @@
     card_view:cardCornerRadius="4dp">
 
     <RelativeLayout
+        android:id="@+id/rel"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_width="fill_parent"
             android:layout_height="200dp"
             android:layout_alignParentTop="true"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/title"
