@@ -15,6 +15,10 @@ android {
         exclude 'META-INF/ASL2.0'
     }
 
+    dexOptions {
+        preDexLibraries = false
+    }
+
     defaultConfig {
         applicationId "ru.mail.park.android_wikipedia"
         minSdkVersion 15
@@ -36,7 +40,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.10'
+    testCompile ('junit:junit:4.10')
     compile 'com.squareup:otto:1.3.8'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:appcompat-v7:23.1.1'
@@ -45,5 +49,7 @@ dependencies {
     compile 'info.bliki.wiki:bliki-core:3.0.19'
     compile 'info.bliki.wiki:bliki:3.0.19'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.googlecode.json-simple:json-simple:1.1'
+    compile ('com.googlecode.json-simple:json-simple:1.1.1') {
+        exclude module: 'junit'
+    }
 }
