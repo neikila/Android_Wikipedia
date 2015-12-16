@@ -54,8 +54,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
     public void onBindViewHolder(ArticleViewHolder articleViewHolder, int i) {
 
         Article ar = articleInfoList.get(i);
-        File imgFile = new File(ar.getBody());
-        // TODO get real logo
         if (ar.getLogoBitmap() != null) {
             articleViewHolder.vImage.setImageBitmap(ar.getLogoBitmap());
         } else {
@@ -69,7 +67,14 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         View itemView = LayoutInflater.from(viewGroup.getContext()).
                 inflate(R.layout.article_card, viewGroup, false);
 
-        itemView.setOnClickListener(listener);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onClick(v);
+                }
+            }
+        });
         return new ArticleViewHolder(itemView);
     }
 
