@@ -1,27 +1,16 @@
 package ru.mail.park.android_wikipedia;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.mail.park.android_wikipedia.fragments.ArticleFragment;
-import utils.BitmapReady;
 import wikipedia.Article;
 /**
  * Created by ivansemenov on 16.12.15.
@@ -30,14 +19,20 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
     private List<Article> articleInfoList;
     private static Bitmap defaultBitmap;
     private View.OnClickListener listener;
+    private int layoutId;
 
     public ArticlesAdapter(View.OnClickListener listener) {
-        this(listener, new ArrayList<Article>());
+        this(listener, new ArrayList<Article>(), R.layout.article_card_horizontal);
     }
 
-    public ArticlesAdapter(View.OnClickListener listener, List<Article> articleList) {
+    public ArticlesAdapter(View.OnClickListener listener, int layoutId) {
+        this(listener, new ArrayList<Article>(), layoutId);
+    }
+
+    public ArticlesAdapter(View.OnClickListener listener, List<Article> articleList, int layoutId) {
         this.listener = listener;
         this.articleInfoList = articleList;
+        this.layoutId = layoutId;
     }
 
     @Override
@@ -65,7 +60,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
     @Override
     public ArticleViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).
-                inflate(R.layout.article_card, viewGroup, false);
+                inflate(layoutId, viewGroup, false);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
