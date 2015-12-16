@@ -3,10 +3,9 @@ package ru.mail.park.android_wikipedia.fragments;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,20 +17,16 @@ import android.widget.Toast;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 import ru.mail.park.android_wikipedia.ApplicationModified;
 import ru.mail.park.android_wikipedia.ArticlesAdapter;
 import ru.mail.park.android_wikipedia.R;
 import ru.mail.park.android_wikipedia.ServiceHelper;
 import utils.ResultArticle;
-import wikipedia.Article;
 
 public class MainFragment extends Fragment {
     private Handler handler;
     private RecyclerView recList;
+
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
@@ -49,10 +44,8 @@ public class MainFragment extends Fragment {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-//                    ArticlesAdapter articlesAdapter = new ArticlesAdapter(message.getArticles());
-//                    recList.setAdapter(articlesAdapter);
                     ArticlesAdapter adapter = (ArticlesAdapter)recList.getAdapter();
-                    adapter.addArticles(message.getArticles());
+                    adapter.setArticles(message.getArticles());
                     adapter.notifyDataSetChanged();
                 }
             });
@@ -76,7 +69,7 @@ public class MainFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getActivity(), query, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Still not implemented\n" + "Query: " + query, Toast.LENGTH_LONG).show();
                 new ServiceHelper().getArticle(getActivity(), query);
                 return false;
             }

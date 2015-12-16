@@ -5,14 +5,9 @@ import android.app.Application;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
-import dbservice.DbHelper;
 import dbservice.DbService;
 import dbservice.DbServiceImpl;
-import dbservice.DbServiceStubImpl;
 import wikipedia.Article;
-
-//import com.squareup.otto.Bus;
-//import com.squareup.otto.ThreadEnforcer;
 
 /**
  * Created by neikila on 29.09.15.

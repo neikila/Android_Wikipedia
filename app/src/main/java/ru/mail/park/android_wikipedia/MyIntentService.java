@@ -6,7 +6,6 @@ import android.content.Intent;
 import java.util.List;
 
 import dbservice.DbService;
-import dbservice.DbServiceStubImpl;
 import wikipedia.Article;
 
 public class MyIntentService extends IntentService {
@@ -20,6 +19,7 @@ public class MyIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        // TODO как получать базу
         dbService = ((ApplicationModified)getApplication()).getDbService();
         if (intent != null) {
             final String action = intent.getAction();
@@ -33,6 +33,8 @@ public class MyIntentService extends IntentService {
                 handleGetHistory(intent.getIntExtra(ServiceHelper.AMOUNT ,0));
             } else if (ServiceHelper.ACTION_GET_SAVED_ARTICLES.equals(action)) {
                 handleGetSaved(intent.getIntExtra(ServiceHelper.AMOUNT ,0));
+            } else if (ServiceHelper.ACTION_CLEAN_DATABASE.equals(action)) {
+                handleCleanDB();
             }
         }
     }
@@ -65,5 +67,10 @@ public class MyIntentService extends IntentService {
             result = dbService.getSavedArticles();
         }
         serviceHelper.returnArticle(getApplication(), result);
+    }
+
+    private void handleCleanDB() {
+        dbService.clean();
+        serviceHelper.cleanSuccess(getApplication());
     }
 }

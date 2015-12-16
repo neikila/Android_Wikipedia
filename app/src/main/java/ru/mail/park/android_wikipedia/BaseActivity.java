@@ -1,7 +1,5 @@
 package ru.mail.park.android_wikipedia;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -14,13 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import dbservice.DbService;
-import ru.mail.park.android_wikipedia.fragments.ArticleFragment;
 import ru.mail.park.android_wikipedia.fragments.HistoryFragment;
 import ru.mail.park.android_wikipedia.fragments.MainFragment;
 import ru.mail.park.android_wikipedia.fragments.SavedArticlesFragment;
 import ru.mail.park.android_wikipedia.fragments.SettingsFragment;
-import wikipedia.Article;
 
 
 
@@ -64,24 +59,6 @@ public class BaseActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_base, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        this.closeOptionsMenu();
-//        int id = item.getItemId();
-//        Intent i;
-//        switch (id){
-//            case R.id.menu_settings:
-//                return true;
-//            case R.id.menu_history:
-//                return true;
-//        }
-        //noinspection SimplifiableIfStatement
         return true;
     }
 

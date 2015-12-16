@@ -33,7 +33,8 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         return articleInfoList.size();
     }
 
-    public void addArticles(List<Article> articles) {
+    public void setArticles(List<Article> articles) {
+        articleInfoList.clear();
         articleInfoList.addAll(articles);
     }
 

@@ -11,7 +11,8 @@ public class OttoMessage {
     }
 
     public enum MessageType {
-        ResultArticle
+        ResultArticle,
+        CleanSuccess
     }
 
     protected OttoMessage() {}

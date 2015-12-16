@@ -1,9 +1,8 @@
 package ru.mail.park.android_wikipedia.fragments;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +10,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import dbservice.DbService;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+
 import ru.mail.park.android_wikipedia.ApplicationModified;
+import ru.mail.park.android_wikipedia.ArticlesAdapter;
 import ru.mail.park.android_wikipedia.R;
+import ru.mail.park.android_wikipedia.ServiceHelper;
+import utils.CleanSuccess;
+import utils.ResultArticle;
 
 public class SettingsFragment extends Fragment {
-    private DbService dbService;
+    private Handler handler;
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
@@ -29,17 +34,32 @@ public class SettingsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Subscribe
+    public void react(final CleanSuccess message) {
+        if (handler != null) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getActivity(), "База данных очищена", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
         }
-        dbService = ((ApplicationModified)getActivity().getApplication()).getDbService();
+        handler = new Handler();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
+        bus.register(this);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
@@ -48,7 +68,7 @@ public class SettingsFragment extends Fragment {
         cleanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CleanDatabaseAsyncTask().execute();
+                new ServiceHelper().cleanDB(getActivity());
             }
         });
         getActivity().findViewById(R.id.search).setVisibility(View.INVISIBLE);
@@ -58,20 +78,9 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
+        bus.unregister(this);
+
         getActivity().findViewById(R.id.search).setVisibility(View.VISIBLE);
-    }
-
-    private class CleanDatabaseAsyncTask extends AsyncTask<String, Void, Void> {
-        @Override
-        protected Void doInBackground(String... params) {
-            dbService.clean();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            Toast.makeText(getActivity(), "База данных очищена", Toast.LENGTH_LONG);
-        }
     }
 }

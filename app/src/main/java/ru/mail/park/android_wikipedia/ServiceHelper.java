@@ -3,14 +3,13 @@ package ru.mail.park.android_wikipedia;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import utils.CleanSuccess;
 import utils.ResultArticle;
 import wikipedia.Article;
 
@@ -22,6 +21,7 @@ public class ServiceHelper {
     public static final String ACTION_GET_RANDOM_ARTICLE = "ru.mail.park.android_wikipedia.action.GET_RANDOM_ARTICLE";
     public static final String ACTION_GET_HISTORY = "ru.mail.park.android_wikipedia.action.GET_HISTORY";
     public static final String ACTION_GET_SAVED_ARTICLES = "ru.mail.park.android_wikipedia.action.GET_SAVED_ARTICLES";
+    public static final String ACTION_CLEAN_DATABASE = "ru.mail.park.android_wikipedia.action.CLEAN_DATABASE";
 
     public static final String TITLE = "TITLE";
     public static final String AMOUNT = "AMOUNT";
@@ -66,6 +66,13 @@ public class ServiceHelper {
         return getSavedArticles(context, -1);
     }
 
+    public long cleanDB(Context context) {
+        Intent search = new Intent(context, MyIntentService.class);
+        search.setAction(ACTION_CLEAN_DATABASE);
+        context.startService(search);
+        return id.incrementAndGet();
+    }
+
     public void returnArticle(Application application, Article article) {
         Bus bus = ((ApplicationModified)application).getBus();
         bus.post(new ResultArticle(article));
@@ -74,5 +81,10 @@ public class ServiceHelper {
     public void returnArticle(Application application, List<Article> article) {
         Bus bus = ((ApplicationModified)application).getBus();
         bus.post(new ResultArticle(article));
+    }
+
+    public void cleanSuccess(Application application) {
+        Bus bus = ((ApplicationModified)application).getBus();
+        bus.post(new CleanSuccess());
     }
 }
