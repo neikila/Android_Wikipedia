@@ -40,7 +40,7 @@ public class MediaWikiCommunicatorImpl implements MediaWikiCommunicator {
         parameters.put("titles", title);
         parameters.put("prop", "revisions");
         parameters.put("rvprop", "content");
-        parameters.put("format", "xml");
+        parameters.put("format", "json");
         Response tmp = service.getArticleByTitle(parameters);
 
         String result = stringFromResponse(tmp);
@@ -56,7 +56,7 @@ public class MediaWikiCommunicatorImpl implements MediaWikiCommunicator {
         parameters.put("action", "query");
         parameters.put("list", "search");
         parameters.put("srwhat", "text");
-        parameters.put("format", "xml");
+        parameters.put("format", "json");
         parameters.put("srsearch", searchWords);
 
         Response tmp = service.getListOfArticle(parameters);
