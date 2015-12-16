@@ -17,11 +17,11 @@ public class MyIntentService extends IntentService {
     public MyIntentService() {
         super("MyIntentService");
         serviceHelper = new ServiceHelper();
+        processor = new Processor(this);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        processor = new Processor(this);
         if (intent != null) {
             final String action = intent.getAction();
             if (ServiceHelper.ACTION_GET_ARTICLE.equals(action)) {

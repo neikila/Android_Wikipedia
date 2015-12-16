@@ -108,7 +108,15 @@ public class MainFragment extends Fragment {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
 
-        ArticlesAdapter articlesAdapter = new ArticlesAdapter();
+        ArticlesAdapter articlesAdapter = new ArticlesAdapter(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent search = new Intent(getContext(), BaseActivity.class);
+                search.setAction("android.intent.action.OPEN_ARTICLE");
+                search.putExtra(ArticleFragment.ARTICLE_TITLE_TAG, "Saved test article");
+                getContext().startActivity(search);
+            }
+        });
         recList.setAdapter(articlesAdapter);
 
         new ServiceHelper().getSavedArticles(this.getActivity());

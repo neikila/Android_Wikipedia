@@ -29,12 +29,14 @@ import wikipedia.Article;
 public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ArticleViewHolder> {
     private List<Article> articleInfoList;
     private static Bitmap defaultBitmap;
+    private View.OnClickListener listener;
 
-    public ArticlesAdapter() {
-        this(new ArrayList<Article>());
+    public ArticlesAdapter(View.OnClickListener listener) {
+        this(listener, new ArrayList<Article>());
     }
 
-    public ArticlesAdapter(List<Article> articleList) {
+    public ArticlesAdapter(View.OnClickListener listener, List<Article> articleList) {
+        this.listener = listener;
         this.articleInfoList = articleList;
     }
 
@@ -67,15 +69,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         View itemView = LayoutInflater.from(viewGroup.getContext()).
                 inflate(R.layout.article_card, viewGroup, false);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent search = new Intent(viewGroup.getContext(), BaseActivity.class);
-                search.setAction("android.intent.action.OPEN_ARTICLE");
-                search.putExtra(ArticleFragment.ARTICLE_TITLE_TAG, "Saved test article");
-                viewGroup.getContext().startActivity(search);
-            }
-        });
+        itemView.setOnClickListener(listener);
         return new ArticleViewHolder(itemView);
     }
 
