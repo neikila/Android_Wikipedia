@@ -3,20 +3,16 @@ package ru.mail.park.android_wikipedia;
 import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 
-import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
 import java.util.List;
 
-import dbservice.DbService;
+import processor.Processor;
 import wikipedia.Article;
 
 public class MyIntentService extends IntentService {
     private ServiceHelper serviceHelper;
-    private DbService dbService;
+//    private DbService dbService;
+    private Processor processor;
 
     public MyIntentService() {
         super("MyIntentService");
@@ -26,7 +22,8 @@ public class MyIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         // TODO как получать базу
-        dbService = ((ApplicationModified)getApplication()).getDbService();
+//        dbService = ((ApplicationModified)getApplication()).getDbService();
+        processor = new Processor(this);
         if (intent != null) {
             final String action = intent.getAction();
             if (ServiceHelper.ACTION_GET_ARTICLE.equals(action)) {
@@ -41,59 +38,40 @@ public class MyIntentService extends IntentService {
                 handleGetSaved(intent.getIntExtra(ServiceHelper.AMOUNT ,0));
             } else if (ServiceHelper.ACTION_CLEAN_DATABASE.equals(action)) {
                 handleCleanDB();
+            } else if (ServiceHelper.ACTION_GET_DEFAULT_BITMAP.equals(action)) {
+                handleGetDefaultBitmap();
             }
         }
     }
 
     private void handleGetArticle(String title) {
-        Article article = dbService.getArticleByTitle(title);
+        Article article = processor.getArticleByTitle(title);
         serviceHelper.returnArticle(getApplication(), article);
     }
 
     private void handleGetRandomArticle() {
-        Article article = dbService.getRandomArticle();
+        Article article = processor.getRandomArticle();
         serviceHelper.returnArticle(getApplication(), article);
     }
 
     private void handleGetHistory(int amount) {
-        List<Article> result;
-        if (amount > 0) {
-            result = dbService.getArticlesFromHistory(amount);
-        } else {
-            result = dbService.getArticlesFromHistory();
-        }
+        List<Article> result = processor.getHistory(amount);
         serviceHelper.returnArticle(getApplication(), result);
     }
 
     private void handleGetSaved(int amount) {
-        List<Article> result;
-        if (amount > 0) {
-            result = dbService.getSavedArticles(amount);
-        } else {
-            result = dbService.getSavedArticles();
-        }
-        for (Article article: result) {
-            setBitmap(article);
-        }
+        List<Article> result = processor.getSaved(amount);
+//        processor.setBitmap(result);
         serviceHelper.returnArticle(getApplication(), result);
     }
 
     private void handleCleanDB() {
-        dbService.clean();
+        processor.clean();
         serviceHelper.cleanSuccess(getApplication());
     }
 
-    private void setBitmap(Article article) {
-        try {
-            Bitmap logo = Picasso.with(this)
-                    .load(R.drawable.test)
-                    .placeholder(R.drawable.test1)
-                    .error(R.drawable.test1)
-                    .resize(200, 200)
-                    .get();
-            article.setLogoBitmap(logo);
-        } catch (IOException e) {
-            Log.d("getBitmap", e.toString());
-        }
+    private void handleGetDefaultBitmap() {
+        Bitmap bitmap= processor.getDefaultBitmap();
+        serviceHelper.bitmapReady(getApplication(), bitmap);
     }
 }

@@ -1,24 +1,32 @@
 package ru.mail.park.android_wikipedia;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.BitmapReady;
 import wikipedia.Article;
 /**
  * Created by ivansemenov on 16.12.15.
  */
 public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ArticleViewHolder> {
     private List<Article> articleInfoList;
+    private static Bitmap defaultBitmap;
 
     public ArticlesAdapter() {
         this(new ArrayList<Article>());
@@ -44,7 +52,11 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         Article ar = articleInfoList.get(i);
         File imgFile = new File(ar.getBody());
         // TODO get real logo
-        articleViewHolder.vImage.setImageBitmap(ar.getLogoBitmap());
+        if (ar.getLogoBitmap() != null) {
+            articleViewHolder.vImage.setImageBitmap(ar.getLogoBitmap());
+        } else {
+            articleViewHolder.vImage.setImageBitmap(defaultBitmap);
+        }
         articleViewHolder.vTitle.setText(ar.getTitle());
     }
 
@@ -68,4 +80,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         }
     }
 
+    public static void setDefaultBitmap(Bitmap bitmap) {
+        ArticlesAdapter.defaultBitmap = bitmap;
+    }
 }
