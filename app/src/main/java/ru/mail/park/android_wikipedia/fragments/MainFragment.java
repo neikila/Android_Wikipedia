@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.otto.Bus;
@@ -97,7 +98,7 @@ public class MainFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
         bus.register(this);
 
@@ -111,10 +112,8 @@ public class MainFragment extends Fragment {
         ArticlesAdapter articlesAdapter = new ArticlesAdapter(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent search = new Intent(getContext(), BaseActivity.class);
-                search.setAction("android.intent.action.OPEN_ARTICLE");
-                search.putExtra(ArticleFragment.ARTICLE_TITLE_TAG, "Saved test article");
-                getContext().startActivity(search);
+                String title = ((TextView) v.findViewById(R.id.title)).getText().toString();
+                ((BaseActivity) getActivity()).openArticle(title);
             }
         });
         recList.setAdapter(articlesAdapter);

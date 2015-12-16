@@ -94,10 +94,7 @@ public class BaseActivity extends AppCompatActivity
         transaction.commit();
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        String title = intent.getStringExtra(ArticleFragment.ARTICLE_TITLE_TAG);
+    public void openArticle(String title) {
         setFragment(ArticleFragment.newInstance(title));
     }
 }
