@@ -44,7 +44,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         Article ar = articleInfoList.get(i);
         File imgFile = new File(ar.getBody());
         // TODO get real logo
-        articleViewHolder.vImage.setImageResource(R.drawable.test1);
+        articleViewHolder.vImage.setImageBitmap(ar.getLogoBitmap());
         articleViewHolder.vTitle.setText(ar.getTitle());
     }
 

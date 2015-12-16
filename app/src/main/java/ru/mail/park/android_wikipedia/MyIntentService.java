@@ -2,7 +2,13 @@ package ru.mail.park.android_wikipedia;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 import java.util.List;
 
 import dbservice.DbService;
@@ -66,11 +72,28 @@ public class MyIntentService extends IntentService {
         } else {
             result = dbService.getSavedArticles();
         }
+        for (Article article: result) {
+            setBitmap(article);
+        }
         serviceHelper.returnArticle(getApplication(), result);
     }
 
     private void handleCleanDB() {
         dbService.clean();
         serviceHelper.cleanSuccess(getApplication());
+    }
+
+    private void setBitmap(Article article) {
+        try {
+            Bitmap logo = Picasso.with(this)
+                    .load(R.drawable.test)
+                    .placeholder(R.drawable.test1)
+                    .error(R.drawable.test1)
+                    .resize(200, 200)
+                    .get();
+            article.setLogoBitmap(logo);
+        } catch (IOException e) {
+            Log.d("getBitmap", e.toString());
+        }
     }
 }

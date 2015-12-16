@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/home/neikila/Technopark/Part_3/Android/Android_Wikipedia/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.3/jars/classes.jar"
+        jar="/home/neikila/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="00b0b7233e1ec64acebfac40d4983d32d4712426">
-        <dex dex="/home/neikila/Technopark/Part_3/Android/Android_Wikipedia/app/build/intermediates/pre-dexed/debug/classes-36e1cb3da09641914831d5977bdfb88e38ad1f47.jar" />
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="/home/neikila/Technopark/Part_3/Android/Android_Wikipedia/app/build/intermediates/pre-dexed/debug/picasso-2.5.2-601341be846f8525b2e342d0716551e571ad16f0.jar" />
     </item>
 
 </items>
