@@ -15,10 +15,6 @@ android {
         exclude 'META-INF/ASL2.0'
     }
 
-    dexOptions {
-        preDexLibraries = false
-    }
-
     defaultConfig {
         applicationId "ru.mail.park.android_wikipedia"
         minSdkVersion 15
