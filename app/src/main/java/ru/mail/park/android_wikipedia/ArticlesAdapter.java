@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import wikipedia.Article;
@@ -18,6 +19,10 @@ import wikipedia.Article;
  */
 public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ArticleViewHolder> {
     private List<Article> articleInfoList;
+
+    public ArticlesAdapter() {
+        this(new ArrayList<Article>());
+    }
 
     public ArticlesAdapter(List<Article> articleList) {
         this.articleInfoList = articleList;
@@ -28,12 +33,17 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         return articleInfoList.size();
     }
 
+    public void addArticles(List<Article> articles) {
+        articleInfoList.addAll(articles);
+    }
+
     @Override
     public void onBindViewHolder(ArticleViewHolder articleViewHolder, int i) {
 
         Article ar = articleInfoList.get(i);
         File imgFile = new File(ar.getBody());
-        articleViewHolder.vImage.setImageURI((Uri) Uri.fromFile(imgFile));
+        // TODO get real logo
+        articleViewHolder.vImage.setImageResource(R.drawable.test1);
         articleViewHolder.vTitle.setText(ar.getTitle());
     }
 
@@ -45,7 +55,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         return new ArticleViewHolder(itemView);
     }
 
-    public static class ArticleViewHolder extends RecyclerView.ViewHolder {
+    public class ArticleViewHolder extends RecyclerView.ViewHolder {
 
         protected TextView vTitle;
         protected ImageView vImage;

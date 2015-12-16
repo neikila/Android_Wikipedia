@@ -46,9 +46,11 @@ public class MainFragment extends Fragment {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                    transaction.add(R.id.fragment_article, ArticleFragment.newInstance(message.getArticle().getTitle()));
-                    transaction.commit();
+//                    ArticlesAdapter articlesAdapter = new ArticlesAdapter(message.getArticles());
+//                    recList.setAdapter(articlesAdapter);
+                    ArticlesAdapter adapter = (ArticlesAdapter)recList.getAdapter();
+                    adapter.addArticles(message.getArticles());
+                    adapter.notifyDataSetChanged();
                 }
             });
         }
@@ -63,25 +65,12 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private List<Article> createList(int size) {
-
-        List<Article> result = new ArrayList<Article>();
-        for (int i=1; i <= size; i++) {
-            Article art = new Article("Title"+i,"","");
-            result.add(art);
-
-        }
-
-        return result;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
         bus.register(this);
 
-//        new ServiceHelper().getRandomArticle(this.getActivity());
         View myFragment = inflater.inflate(R.layout.fragment_main, container, false);
         recList = (RecyclerView) myFragment.findViewById(R.id.card_list);
         recList.setHasFixedSize(true);
@@ -89,9 +78,10 @@ public class MainFragment extends Fragment {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
 
-        ArticlesAdapter articlesAdapter = new ArticlesAdapter(createList(2));
+        ArticlesAdapter articlesAdapter = new ArticlesAdapter();
         recList.setAdapter(articlesAdapter);
 
+        new ServiceHelper().getSavedArticles(this.getActivity());
         return myFragment;
     }
 
