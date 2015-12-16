@@ -21,6 +21,7 @@ import ru.mail.park.android_wikipedia.ApplicationModified;
 import ru.mail.park.android_wikipedia.ArticlesAdapter;
 import ru.mail.park.android_wikipedia.R;
 import ru.mail.park.android_wikipedia.ServiceHelper;
+import utils.OttoMessage;
 import utils.ResultArticle;
 
 public class MainFragment extends Fragment {
@@ -39,16 +40,26 @@ public class MainFragment extends Fragment {
     }
 
     @Subscribe
-    public void react(final ResultArticle message) {
+    public void react(final OttoMessage message) {
         if (handler != null) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    ArticlesAdapter adapter = (ArticlesAdapter)recList.getAdapter();
-                    adapter.setArticles(message.getArticles());
-                    adapter.notifyDataSetChanged();
-                }
-            });
+            if (message.getMessageType().equals(OttoMessage.MessageType.ResultArticle)) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArticlesAdapter adapter = (ArticlesAdapter) recList.getAdapter();
+                        adapter.setArticles(((ResultArticle) message).getArticles());
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            } else if (message.getMessageType().equals(OttoMessage.MessageType.UpdateAdapter)) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArticlesAdapter adapter = (ArticlesAdapter) recList.getAdapter();
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
         }
     }
 

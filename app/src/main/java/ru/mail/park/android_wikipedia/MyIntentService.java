@@ -61,8 +61,13 @@ public class MyIntentService extends IntentService {
 
     private void handleGetSaved(int amount) {
         List<Article> result = processor.getSaved(amount);
-//        processor.setBitmap(result);
         serviceHelper.returnArticle(getApplication(), result);
+        processor.setBitmap(result, new Runnable() {
+            @Override
+            public void run() {
+                serviceHelper.updateAdapter(getApplication());
+            }
+        });
     }
 
     private void handleCleanDB() {

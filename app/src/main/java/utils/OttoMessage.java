@@ -13,7 +13,8 @@ public class OttoMessage {
     public enum MessageType {
         ResultArticle,
         CleanSuccess,
-        BitmapReady
+        BitmapReady,
+        UpdateAdapter
     }
 
     protected OttoMessage() {}
