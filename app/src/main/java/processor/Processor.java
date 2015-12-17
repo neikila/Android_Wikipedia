@@ -74,7 +74,7 @@ public class Processor {
         article.setLogoBitmap(logo);
     }
 
-    public Bitmap loadImageFromStorage(String article, String filename) {
+    private Bitmap loadImageFromStorage(String article, String filename) {
         Bitmap bitmap = null;
         try {
             File directory = context.getDir(IMAGE_DIR, Context.MODE_PRIVATE);
@@ -90,7 +90,7 @@ public class Processor {
         return bitmap;
     }
 
-    public String saveToInternalStorage(Bitmap bitmapImage, String articleName, String filename) {
+    private String saveToInternalStorage(Bitmap bitmapImage, String articleName, String filename) {
         File directory = context.getDir(IMAGE_DIR, Context.MODE_PRIVATE);
         File articleDirectory = new File(directory, articleName.replace(' ', '_'));
         articleDirectory.mkdir();
@@ -131,7 +131,7 @@ public class Processor {
         return logo;
     }
 
-    public boolean deleteRecursive(File fileOrDirectory) {
+    private boolean deleteRecursive(File fileOrDirectory) {
         if (fileOrDirectory.isDirectory())
             for (File child: fileOrDirectory.listFiles())
                 deleteRecursive(child);
