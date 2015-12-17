@@ -25,7 +25,8 @@ public class ServiceHelper {
     public static final String ACTION_GET_HISTORY = "ru.mail.park.android_wikipedia.action.GET_HISTORY";
     public static final String ACTION_GET_SAVED_ARTICLES = "ru.mail.park.android_wikipedia.action.GET_SAVED_ARTICLES";
     public static final String ACTION_CLEAN_DATABASE = "ru.mail.park.android_wikipedia.action.CLEAN_DATABASE";
-    public static final String ACTION_GET_DEFAULT_BITMAP = "ru.mail.park.android_wikipedia.action.GET__DEFAULT_BITMAP";
+    public static final String ACTION_GET_DEFAULT_BITMAP = "ru.mail.park.android_wikipedia.action.GET_DEFAULT_BITMAP";
+    public static final String ACTION_PREPARE_TEST_DATA = "ru.mail.park.android_wikipedia.action.PREPARE_TEST_DATA";
 
     public static final String TITLE = "TITLE";
     public static final String AMOUNT = "AMOUNT";
@@ -107,5 +108,11 @@ public class ServiceHelper {
     public void updateAdapter(Application application) {
         Bus bus = ((ApplicationModified)application).getBus();
         bus.post(new UpdateAdapter());
+    }
+
+    public void prepareTestData(Context context) {
+        Intent intent = new Intent(context, MyIntentService.class);
+        intent.setAction(ACTION_PREPARE_TEST_DATA);
+        context.startService(intent);
     }
 }

@@ -2,14 +2,16 @@ package processor;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import dbservice.DbService;
 import dbservice.DbServiceImpl;
@@ -22,6 +24,7 @@ import wikipedia.Article;
 public class Processor {
     private DbService dbService;
     private Context context;
+    final private static String IMAGE_DIR = "imageDir";
 
     public Processor(Context context) {
         this.context = context;
@@ -66,17 +69,48 @@ public class Processor {
     }
 
     private void setBitmap(Article article) {
+        Bitmap logo;
+        logo = loadImageFromStorage(article.getTitle(), article.getLogo());
+        article.setLogoBitmap(logo);
+    }
+
+    private Bitmap loadImageFromStorage(String article, String filename) {
+        Bitmap bitmap = null;
         try {
-            Bitmap logo = Picasso.with(context)
-                    .load(R.drawable.test)
-                    .placeholder(R.drawable.test1)
-                    .error(R.drawable.test1)
+            File directory = context.getDir(IMAGE_DIR, Context.MODE_PRIVATE);
+            File articleDirectory = new File(directory, article.replace(' ', '_'));
+            bitmap = Picasso
+                    .with(context)
+                    .load(new File(articleDirectory, filename))
                     .resize(200, 200)
                     .get();
-            article.setLogoBitmap(logo);
         } catch (IOException e) {
-            Log.d("getBitmap", e.toString());
+            e.printStackTrace();
         }
+        return bitmap;
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage, String articleName, String filename) {
+        File directory = context.getDir(IMAGE_DIR, Context.MODE_PRIVATE);
+        File articleDirectory = new File(directory, articleName.replace(' ', '_'));
+        articleDirectory.mkdir();
+        // Create imageDir
+        File myPath = new File(articleDirectory, filename);
+
+        try {
+            FileOutputStream fos = new FileOutputStream(myPath);
+            try {
+                bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (fos != null)
+                    fos.close();
+            }
+        } catch (IOException e) {
+
+        }
+        return myPath.getAbsolutePath();
     }
 
     public void clean() {
@@ -88,13 +122,51 @@ public class Processor {
         try {
             logo = Picasso.with(context)
                     .load(R.drawable.wiki_icon)
-                    .placeholder(R.drawable.test1)
-                    .error(R.drawable.test1)
+                    .error(R.drawable.debug)
                     .resize(200, 200)
                     .get();
         } catch (IOException e) {
             Log.d("getBitmap", e.toString());
         }
         return logo;
+    }
+
+    private boolean deleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory())
+            for (File child: fileOrDirectory.listFiles())
+                deleteRecursive(child);
+        return fileOrDirectory.delete();
+    }
+
+    public void prepareTestData() {
+        File directory = context.getDir(IMAGE_DIR, Context.MODE_PRIVATE);
+        deleteRecursive(directory);
+        dbService.clean();
+        Bitmap logo = null;
+        try {
+            logo = Picasso.with(context)
+                    .load(R.drawable.test)
+                    .resize(200, 200)
+                    .get();
+        } catch (IOException e) {
+            Log.d("getBitmap", e.toString());
+        }
+        Article temp;
+
+        temp = new Article("Test article", "profile.jpg", "qwe.com/1");
+        dbService.saveArticleInHistory(temp);
+        saveToInternalStorage(logo, temp.getTitle(), temp.getLogo());
+
+        temp = new Article("Saved test article", "profile.jpg", "qwe.com/2");
+        dbService.saveArticle(temp);
+        saveToInternalStorage(logo, temp.getTitle(), temp.getLogo());
+
+        temp = new Article("Test article1", "profile.jpg", "qwe.com1/1");
+        dbService.saveArticleInHistory(temp);
+        saveToInternalStorage(logo, temp.getTitle(), temp.getLogo());
+
+        temp = new Article("Saved test article1", "profile.jpg", "qwe.com2/2");
+        dbService.saveArticle(temp);
+        saveToInternalStorage(logo, temp.getTitle(), temp.getLogo());
     }
 }

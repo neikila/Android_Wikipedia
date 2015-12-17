@@ -36,6 +36,7 @@ public class PreloaderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preloader);
 
         handler = new Handler();
+        new ServiceHelper().prepareTestData(this);
         new ServiceHelper().getDefaultBitmap(this);
     }
 
