@@ -42,6 +42,8 @@ public class MyIntentService extends IntentService {
                 handleCleanDB();
             } else if (ServiceHelper.ACTION_GET_DEFAULT_BITMAP.equals(action)) {
                 handleGetDefaultBitmap();
+            } else if (ServiceHelper.ACTION_PREPARE_TEST_DATA.equals(action)) {
+                handlePrepareTestData();
             }
         }
     }
@@ -80,5 +82,9 @@ public class MyIntentService extends IntentService {
     private void handleGetDefaultBitmap() {
         Bitmap bitmap= processor.getDefaultBitmap();
         serviceHelper.bitmapReady(getApplication(), bitmap);
+    }
+
+    private void handlePrepareTestData() {
+        processor.prepareTestData();
     }
 }
