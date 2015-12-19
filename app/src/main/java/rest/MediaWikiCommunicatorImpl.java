@@ -68,16 +68,25 @@ public class MediaWikiCommunicatorImpl implements MediaWikiCommunicator {
         return result;
     }
 
+    //https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&titles=Far_Eastern_Party&pithumbsize=500&format=xml
     @Override
-    public String getLinkImageTitle(String title, Integer size) throws IOException {
-        return null;
+    public String getRawLinkImageTitle(String title, Integer size) throws IOException {
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("action", "query");
+        parameters.put("prop","pageimages");
+        parameters.put("titles", title);
+        parameters.put("pithumbsize", size.toString());
+        parameters.put("format", "json");
+        Response tmp = service.getRawLinkImageTitle(parameters);
+        String result = stringFromResponse(tmp);
+        return result;
     }
 
 
 
 
 
-    String stringFromResponse(Response response){
+    protected String stringFromResponse(Response response){
         BufferedReader reader = null;
         StringBuilder sb = new StringBuilder();
 

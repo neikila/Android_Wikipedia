@@ -18,6 +18,6 @@ public interface MediaWikiApi {
     Response getListOfArticle(@QueryMap Map<String, String> parameters);
 
     @GET("/")
-    Response getLinkImageTitle(@QueryMap Map<String, String> parameters);
+    Response getRawLinkImageTitle(@QueryMap Map<String, String> parameters);
 
 }

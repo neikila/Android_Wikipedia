@@ -12,5 +12,5 @@ public interface MediaWikiCommunicator {
 
     String getListOfArticle(String searchWords, Integer limit) throws IOException;
 
-    String getLinkImageTitle(String title, Integer size) throws  IOException;
+    String getRawLinkImageTitle(String title, Integer size) throws  IOException;
 }

@@ -76,5 +76,19 @@ public class WikitextHandler {
 
     }
 
+    public static String getLinkImageTitle(String rawWikiText) throws ParseException {
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(rawWikiText);
+        JSONObject jsonObj = (JSONObject) obj;
+        JSONObject jsonQueryKey = (JSONObject) jsonObj.get("query");
+        JSONObject jsonPagesKey = (JSONObject) jsonQueryKey.get("pages");
+        Object[] idPage = jsonPagesKey.keySet().toArray();
+        String idP = idPage[0].toString();
+        JSONObject jsonIdPageKey = (JSONObject) jsonPagesKey.get(idP);
+        JSONObject jsonThumbnailKey = (JSONObject) jsonIdPageKey.get("thumbnail");
+        String link = jsonThumbnailKey.get("source").toString();
+        return link;
+    }
+
 
 }
