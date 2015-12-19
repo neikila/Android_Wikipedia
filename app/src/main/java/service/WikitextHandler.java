@@ -6,21 +6,30 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.ArrayList;
+
 /**
  * Created by vasiliy on 16.12.15.
  */
 public class WikitextHandler {
-
-    public static JSONObject getListOfArticleInGSON(String ListArticles){
+    //краткая информация, каждый элемент JSONObject из которого можно достать snippet, wordcount, size, ns, title, timestamp
+    public static ArrayList<JSONObject> getListOfArticleInGSON(String ListArticles){
         JSONParser parser = new JSONParser();
         Object obj = null;
+        ArrayList<JSONObject> listOfArticles = new ArrayList<JSONObject>();
         try {
             obj = parser.parse(ListArticles);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         JSONObject jsonObj = (JSONObject) obj;
-        return (JSONObject) jsonObj.get("query");
+        JSONObject jsonQueryKey = (JSONObject) jsonObj.get("query");
+        JSONArray jsonSearchKey = (JSONArray) jsonQueryKey.get("search");
+        for (int k = 0; k < jsonSearchKey.size(); k++) {
+            listOfArticles.add((JSONObject) jsonSearchKey.get(k));
+        }
+        //System.out.print(listOfArticles.get(0).get("snippet"));
+        return listOfArticles;
     }
 
     public static String getHTMLfromWikiText(String rawWikiText) throws ParseException {

@@ -29,6 +29,7 @@ public class MediaWikiCommunicatorImpl implements MediaWikiCommunicator {
 
     public MediaWikiCommunicatorImpl(){
         retrofit = new RestAdapter.Builder().setEndpoint("https://en.wikipedia.org/w/api.php").build();
+        //retrofit = new RestAdapter.Builder().setEndpoint("https://upload.wikimedia.org").build();
         service = retrofit.create(MediaWikiApi.class);
     }
 
@@ -51,18 +52,27 @@ public class MediaWikiCommunicatorImpl implements MediaWikiCommunicator {
     // метод возвращает заголовки страниц с кратким оисанием удволетворяющих поисковому запросу, 10 результатов,
     // также там можно найти заголовки по которым можно получить страницу используя метод  getArticleByTitle
     @Override
-    public String getListOfArticle(String searchWords) {
+    public String getListOfArticle(String searchWords, Integer limit) {
         Map<String, String> parameters = new HashMap<String, String>();
+        if ((limit <= 0) || (limit >= 51))
+            limit = 10;
         parameters.put("action", "query");
         parameters.put("list", "search");
         parameters.put("srwhat", "text");
         parameters.put("format", "json");
         parameters.put("srsearch", searchWords);
+        parameters.put("srlimit", limit.toString());
 
         Response tmp = service.getListOfArticle(parameters);
         String result = stringFromResponse(tmp);
         return result;
     }
+
+    @Override
+    public String getLinkImageTitle(String title, Integer size) throws IOException {
+        return null;
+    }
+
 
 
 
