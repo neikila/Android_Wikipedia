@@ -1,6 +1,7 @@
 package service;
 
 import info.bliki.wiki.model.WikiModel;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -26,7 +27,17 @@ public class WikitextHandler {
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(rawWikiText);
         JSONObject jsonObj = (JSONObject) obj;
-        String WikiText = jsonObj.get("query").toString();
+        JSONObject jsonQueryKey = (JSONObject) jsonObj.get("query");
+        JSONObject jsonPagesKey = (JSONObject) jsonQueryKey.get("pages");
+        Object[] idPage = jsonPagesKey.keySet().toArray();
+        String idP = idPage[0].toString();
+        JSONObject jsonIdPageKey = (JSONObject) jsonPagesKey.get(idP);
+        JSONArray jsonRevisionsKey = (JSONArray) jsonIdPageKey.get("revisions");
+        JSONObject jsonWikiInformation = (JSONObject) jsonRevisionsKey.get(0);
+        String WikiText = (String ) jsonWikiInformation.get("*");
+
+        //System.out.print(jsonWikiText);
+
         String htmlText = WikiModel.toHtml(WikiText);
         return htmlText;
     }
