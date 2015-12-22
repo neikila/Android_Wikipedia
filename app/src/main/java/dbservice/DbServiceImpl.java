@@ -141,12 +141,15 @@ public class DbServiceImpl implements DbService {
 
         Cursor c = db.query(ArticleEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null);
         c.moveToFirst();
-        Article article = new  Article(
-                c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_TITLE)),
-                c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LOGO)),
-                c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LINK)),
-                c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_BODY))
-        );
+        Article article = null;
+        if (c.isClosed()) {
+            article = new Article(
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_TITLE)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LOGO)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LINK)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_BODY))
+            );
+        }
 
         c.close();
         return  article;

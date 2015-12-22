@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import utils.BitmapReady;
 import utils.CleanSuccess;
+import utils.NoResult;
 import utils.ResultArticle;
 import utils.UpdateAdapter;
 import wikipedia.Article;
@@ -108,6 +109,11 @@ public class ServiceHelper {
     public void updateAdapter(Application application) {
         Bus bus = ((ApplicationModified)application).getBus();
         bus.post(new UpdateAdapter());
+    }
+
+    public void noResult(Application application) {
+        Bus bus = ((ApplicationModified)application).getBus();
+        bus.post(new NoResult());
     }
 
     public void prepareTestData(Context context) {

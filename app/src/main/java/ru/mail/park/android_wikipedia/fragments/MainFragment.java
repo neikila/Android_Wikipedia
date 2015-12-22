@@ -61,6 +61,13 @@ public class MainFragment extends Fragment {
                         adapter.notifyDataSetChanged();
                     }
                 });
+            } else if (message.getMessageType().equals(OttoMessage.MessageType.NoResult)) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), "No article found", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }
     }
@@ -77,14 +84,16 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_main_fragment, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getActivity(), "Still not implemented\n" + "Query: " + query, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Still not implemented\n" + "Query: " + query, Toast.LENGTH_SHORT).show();
                 new ServiceHelper().getArticle(getActivity(), query);
-                return false;
+                return true;
             }
 
             @Override

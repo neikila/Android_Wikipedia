@@ -3,6 +3,7 @@ package ru.mail.park.android_wikipedia;
 import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -27,11 +28,12 @@ public class MyIntentService extends IntentService {
             if (ServiceHelper.ACTION_GET_ARTICLE.equals(action)) {
                 final String title = intent.getStringExtra(ServiceHelper.TITLE);
 //                 TODO вернуть когда появится возможность проверить безопасно наличие статьи в базе
-                try {
+//                try {
                     handleGetArticle(title);
-                } catch (Exception e) {
-                    // TODO решить эту проблему
-                }
+//                } catch (Exception e) {
+//                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+//                     TODO решить эту проблему
+//                }
             } else if (ServiceHelper.ACTION_GET_RANDOM_ARTICLE.equals(action)) {
                 handleGetRandomArticle();
             } else if (ServiceHelper.ACTION_GET_HISTORY.equals(action)) {
@@ -50,7 +52,11 @@ public class MyIntentService extends IntentService {
 
     private void handleGetArticle(String title) {
         Article article = processor.getArticleByTitle(title);
-        serviceHelper.returnArticle(getApplication(), article);
+        if (article != null) {
+            serviceHelper.returnArticle(getApplication(), article);
+        } else {
+            serviceHelper.noResult(getApplication());
+        }
     }
 
     private void handleGetRandomArticle() {

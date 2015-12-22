@@ -14,7 +14,8 @@ public class OttoMessage {
         ResultArticle,
         CleanSuccess,
         BitmapReady,
-        UpdateAdapter
+        UpdateAdapter,
+        NoResult
     }
 
     protected OttoMessage() {}
