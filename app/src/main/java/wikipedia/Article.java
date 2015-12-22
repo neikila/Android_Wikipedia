@@ -12,6 +12,10 @@ public class Article {
     private String link;
     private Bitmap logoBitmap;
 
+    public  Article(String title) {
+        this(title, "");
+    }
+
     public Article(String title, String link) {
         this(title, "", link);
     }

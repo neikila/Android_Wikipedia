@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.simple.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -178,7 +180,11 @@ public class Processor {
         MediaWikiCommunicator wiki = new MediaWikiCommunicatorImpl();
         List<Article> list = null;
         try {
-            WikitextHandler.getListOfArticleInGSON(wiki.getListOfArticle(title, -1));
+            List<JSONObject> temp = WikitextHandler.getListOfArticleInGSON(wiki.getListOfArticle(title, -1));
+            list = new ArrayList<>();
+            for (JSONObject obj: temp) {
+                list.add(new Article((String)obj.get(WikitextHandler.TITLE)));
+            }
         } catch (IOException e) {
             // TODO error
         }
