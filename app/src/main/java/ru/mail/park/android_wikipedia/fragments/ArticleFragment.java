@@ -54,12 +54,6 @@ public class ArticleFragment extends Fragment {
                         ArticleFragment.this.setArticle();
                     }
                 });
-            } else if (message.getMessageType().equals(OttoMessage.MessageType.UpdateAdapter)) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                    }
-                });
             }
         }
     }
