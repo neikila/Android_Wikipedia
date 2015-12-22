@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -48,6 +49,7 @@ public class ArticleFragment extends Fragment {
     private Article article;
     private Handler handler;
     private String title;
+    private String newTitle; // для перехода по ссылкам
 
     public static ArticleFragment newInstance(String title) {
         ArticleFragment fragment = new ArticleFragment();
@@ -178,29 +180,41 @@ public class ArticleFragment extends Fragment {
         }
 
     }
-
-    //TODO: додумать механизм сохранения
+    // глюки из-зи захардкодиных статей, не понимаю почему 2 раза сохраняет - видимо из-зи асинхронности
+    // если будет кнопка, то этот глюк исчезнет, т.к. к моменту сохранения вся статья уже будет прогруженна
+    //TODO: додумать механизм сохранения, скорее всего забиндить на кнопку и проверять есть ли статья в базе
     public void saveArticleInMHT() {
+        newTitle = title;
         String domen = "https://ru.m.wikipedia.org/wiki/";
         try {
             String AllUrl = mWebView.getUrl();
-            String newTitle = AllUrl.substring(domen.length(), AllUrl.length());
+            newTitle = AllUrl.substring(domen.length(), AllUrl.length());
             webArchivPath = getActivity().getFilesDir().getAbsolutePath() + File.separator + newTitle + ".mht";
         } catch (NullPointerException e) {
-            webArchivPath = getActivity().getFilesDir().getAbsolutePath() + File.separator + title + ".mht";
+            try {
+                webArchivPath = getActivity().getFilesDir().getAbsolutePath() + File.separator + title + ".mht";
+            } catch (NullPointerException e1) {
+                showToast("Не так быстро!Я не успел сохранить статью!");
+            }
         }
 
         mWebView.saveWebArchive(webArchivPath);
         showToast("Save in file://" + webArchivPath);
+
     }
 
     public void showToast(String path) {
         //создаем и отображаем текстовое уведомление
-        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                path,
-                Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+        try {
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                    path,
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        } catch (NullPointerException e) {
+            Log.d("hardcodeArticles", "Не так быстро!Я не успел сохранить статью!");
+        }
+
     }
 
 
