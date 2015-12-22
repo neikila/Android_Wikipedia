@@ -1,6 +1,7 @@
 package ru.mail.park.android_wikipedia.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -128,14 +129,22 @@ public class ArticleFragment extends Fragment {
         mWebView.setWebViewClient(new MyWebViewClient());
         // включаем поддержку JavaScript
         mWebView.getSettings().setJavaScriptEnabled(true);
+
         // указываем страницу загрузки
-        mWebView.loadUrl("https://en.m.wikipedia.org/wiki/Pi");
+        //заглушка
+        mWebView.loadUrl("https://en.m.wikipedia.org/wiki/" + "Pi");
+        //mWebView.loadUrl("https://en.m.wikipedia.org/wiki/" + article.getTitle());
     }
 
 
 
     private class MyWebViewClient extends WebViewClient
     {
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageFinished(view, url);
+        }
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url)
         {
@@ -154,10 +163,13 @@ public class ArticleFragment extends Fragment {
                     "document.getElementById(\"ca-watch\").remove();" +
                     "document.getElementById(\"siteNotice\").remove();" +
                     " })()");
-            //showToast(url);
 
-            //String path = getFilesDir().getAbsolutePath() + File.separator + "Pi" + ".mht";
-            //mWebView.saveWebArchive(path);
+
+            webArchivPath = getActivity().getFilesDir().getAbsolutePath() + File.separator + article.getTitle() + ".mht";
+            mWebView.saveWebArchive(webArchivPath);
+            showToast("Save in file://" + webArchivPath);
+
+            //для загрузки сохраненной страницы
             //mWebView.loadUrl("file://"+path);
 
         }
@@ -171,7 +183,6 @@ public class ArticleFragment extends Fragment {
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
-
 
 
     private Runnable hideToCButtonRunnable = new Runnable() {
