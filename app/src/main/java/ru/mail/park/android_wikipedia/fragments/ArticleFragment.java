@@ -170,14 +170,28 @@ public class ArticleFragment extends Fragment {
                     " })()");
 
 
-            webArchivPath = getActivity().getFilesDir().getAbsolutePath() + File.separator + article.getTitle() + ".mht";
-            mWebView.saveWebArchive(webArchivPath);
-            showToast("Save in file://" + webArchivPath);
+            saveArticleInMHT();
 
             //для загрузки сохраненной страницы
             //mWebView.loadUrl("file://"+path);
 
         }
+
+    }
+
+    //TODO: додумать механизм сохранения
+    public void saveArticleInMHT() {
+        String domen = "https://ru.m.wikipedia.org/wiki/";
+        try {
+            String AllUrl = mWebView.getUrl();
+            String newTitle = AllUrl.substring(domen.length(), AllUrl.length());
+            webArchivPath = getActivity().getFilesDir().getAbsolutePath() + File.separator + newTitle + ".mht";
+        } catch (NullPointerException e) {
+            webArchivPath = getActivity().getFilesDir().getAbsolutePath() + File.separator + title + ".mht";
+        }
+
+        mWebView.saveWebArchive(webArchivPath);
+        showToast("Save in file://" + webArchivPath);
     }
 
     public void showToast(String path) {
