@@ -135,7 +135,7 @@ public class ArticleFragment extends Fragment {
         // указываем страницу загрузки
         //заглушка
         //mWebView.loadUrl("https://en.m.wikipedia.org/wiki/" + "Pi");
-        mWebView.loadUrl("https://en.m.wikipedia.org/wiki/" + title);
+        mWebView.loadUrl("https://ru.m.wikipedia.org/wiki/" + title);
     }
 
     private void setArticle() {
