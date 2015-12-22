@@ -99,6 +99,7 @@ public class ArticleFragment extends Fragment {
             }
         });
         new ServiceHelper().getArticle(getActivity(), title);
+        setArticle(rootView);
         return rootView;
     }
 
@@ -120,8 +121,7 @@ public class ArticleFragment extends Fragment {
         bus.unregister(this);
     }
 
-    private void setArticle() {
-        View view = ArticleFragment.this.getView();
+    private void setArticle(View view) {
 //        ((ImageView)view.findViewById(R.id.main_article_image)).setImageBitmap(article.getLogoBitmap());
 //        ((TextView)view.findViewById(R.id.article_title)).setText(article.getTitle());
 //        ((TextView) view.findViewById(R.id.article_body)).setText("Body: " + article.getBody());
@@ -133,7 +133,12 @@ public class ArticleFragment extends Fragment {
         // указываем страницу загрузки
         //заглушка
         //mWebView.loadUrl("https://en.m.wikipedia.org/wiki/" + "Pi");
-        mWebView.loadUrl("https://en.m.wikipedia.org/wiki/" + article.getTitle());
+        mWebView.loadUrl("https://en.m.wikipedia.org/wiki/" + title);
+    }
+
+    private void setArticle() {
+        View view = ArticleFragment.this.getView();
+        setArticle(view);
     }
 
 
