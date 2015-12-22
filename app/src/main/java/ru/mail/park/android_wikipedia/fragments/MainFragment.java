@@ -82,17 +82,25 @@ public class MainFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    // TODO костыль
+    private boolean isClicked = false;
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_main_fragment, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
+//        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getActivity(), "Still not implemented\n" + "Query: " + query, Toast.LENGTH_SHORT).show();
-                new ServiceHelper().getArticle(getActivity(), query);
+                if (!isClicked) {
+                    Toast.makeText(getActivity(), "Still not implemented\n" + "Query: " + query, Toast.LENGTH_SHORT).show();
+                    new ServiceHelper().getArticle(getActivity(), query);
+                    isClicked = true;
+                } else {
+                    isClicked = false;
+                }
                 return true;
             }
 
@@ -101,7 +109,6 @@ public class MainFragment extends Fragment {
                 return false;
             }
         });
-
     }
 
     @Override
