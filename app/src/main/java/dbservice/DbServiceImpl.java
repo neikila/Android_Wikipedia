@@ -30,40 +30,14 @@ public class DbServiceImpl implements DbService {
         dbHelper.cleanArticle();
     }
 
-    //TODO к 4 релизу убрать повторяющийся код
+
     @Override
     public List<Article> getArticlesFromHistory() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        String[] projection = {
-                HistoryOfSearchEntry.COLUMN_NAME_TITLE,
-                HistoryOfSearchEntry.COLUMN_NAME_LOGO,
-                HistoryOfSearchEntry.COLUMN_NAME_LINK
-        };
-
-        Cursor c = db.query(HistoryOfSearchEntry.TABLE_NAME, projection,
-                null, null, null, null, HISTORY_TIME_DESC_SORT);
-        List<Article> articles = new ArrayList<>();
-
-        if(c.getCount() > 0) {
-            c.moveToFirst();
-            while (!c.isAfterLast()) {
-                Article article = new Article(
-                        c.getString(c.getColumnIndex(HistoryOfSearchEntry.COLUMN_NAME_TITLE)),
-                        c.getString(c.getColumnIndex(HistoryOfSearchEntry.COLUMN_NAME_LOGO)),
-                        c.getString(c.getColumnIndex(HistoryOfSearchEntry.COLUMN_NAME_LINK))
-                );
-                articles.add(article);
-                c.moveToNext();
-            }
-        }
-
-        c.close();
-        return articles;
+        return getArticlesFromHistory(null);
     }
 
     @Override
-    public List<Article> getArticlesFromHistory(int length) {
+    public List<Article> getArticlesFromHistory(Integer length) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String[] projection = {
@@ -72,8 +46,14 @@ public class DbServiceImpl implements DbService {
                 HistoryOfSearchEntry.COLUMN_NAME_LINK
         };
 
-        Cursor c = db.query(HistoryOfSearchEntry.TABLE_NAME, projection,
-                null, null, null, null, HISTORY_TIME_DESC_SORT, Integer.toString(length));
+        Cursor c;
+        if(length != null) {
+            c = db.query(HistoryOfSearchEntry.TABLE_NAME, projection,
+                    null, null, null, null, HISTORY_TIME_DESC_SORT, Integer.toString(length));
+        } else {
+            c = db.query(HistoryOfSearchEntry.TABLE_NAME, projection,
+                        null, null, null, null, HISTORY_TIME_DESC_SORT);
+        }
         List<Article> articles = new ArrayList<>();
 
         if(c.getCount() > 0) {
@@ -95,38 +75,11 @@ public class DbServiceImpl implements DbService {
 
     @Override
     public List<Article> getSavedArticles() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        String[] projection = {
-                ArticleEntry.COLUMN_NAME_TITLE,
-                ArticleEntry.COLUMN_NAME_LOGO,
-                ArticleEntry.COLUMN_NAME_LINK,
-                ArticleEntry.COLUMN_NAME_BODY
-        };
-
-        Cursor c = db.query(ArticleEntry.TABLE_NAME, projection,
-                null, null, null, null, ARTICLE_TIME_DESC_SORT);
-        List<Article> articles = new ArrayList<>();
-        if(c.getCount() > 0) {
-            c.moveToFirst();
-            while (!c.isAfterLast()) {
-                Article article = new Article(
-                        c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_TITLE)),
-                        c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LOGO)),
-                        c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LINK)),
-                        c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_BODY))
-                );
-                articles.add(article);
-                c.moveToNext();
-            }
-        }
-
-        c.close();
-        return articles;
+        return getSavedArticles(null);
     }
 
     @Override
-    public List<Article> getSavedArticles(int length) {
+    public List<Article> getSavedArticles(Integer length) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -137,8 +90,14 @@ public class DbServiceImpl implements DbService {
                 ArticleEntry.COLUMN_NAME_BODY
         };
 
-        Cursor c = db.query(ArticleEntry.TABLE_NAME, projection,
-                null, null, null, null, ARTICLE_TIME_DESC_SORT, Integer.toString(length));
+        Cursor c;
+        if(length != null) {
+            c = db.query(ArticleEntry.TABLE_NAME, projection,
+                    null, null, null, null, ARTICLE_TIME_DESC_SORT, Integer.toString(length));
+        } else {
+            c = db.query(ArticleEntry.TABLE_NAME, projection,
+                    null, null, null, null, ARTICLE_TIME_DESC_SORT);
+        }
         List<Article> articles = new ArrayList<>();
         if(c.getCount() > 0) {
             c.moveToFirst();
