@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import utils.BitmapReady;
 import utils.CleanSuccess;
+import utils.NoInternet;
 import utils.NoResult;
 import utils.ResultArticle;
 import utils.UpdateAdapter;
@@ -115,6 +116,11 @@ public class ServiceHelper {
     public void noResult(Application application) {
         Bus bus = ((ApplicationModified)application).getBus();
         bus.post(new NoResult());
+    }
+
+    public void noInternetNotification(Application application) {
+        Bus bus = ((ApplicationModified)application).getBus();
+        bus.post(new NoInternet());
     }
 
     public void prepareTestData(Context context) {

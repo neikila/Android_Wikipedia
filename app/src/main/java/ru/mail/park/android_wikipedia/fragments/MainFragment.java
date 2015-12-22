@@ -68,6 +68,13 @@ public class MainFragment extends Fragment {
                         Toast.makeText(getActivity(), "No article found", Toast.LENGTH_SHORT).show();
                     }
                 });
+            } else if (message.getMessageType().equals(OttoMessage.MessageType.NoInternet)) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), "No internet", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }
     }
