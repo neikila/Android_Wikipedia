@@ -35,7 +35,7 @@ public class DbServiceStubImpl implements DbService {
     }
 
     @Override
-    public List<Article> getArticlesFromHistory(int length) {
+    public List<Article> getArticlesFromHistory(Integer length) {
         return requestedArticles.subList(0, length);
     }
 
@@ -45,7 +45,7 @@ public class DbServiceStubImpl implements DbService {
     }
 
     @Override
-    public List<Article> getSavedArticles(int length) {
+    public List<Article> getSavedArticles(Integer length) {
         return savedArticles.subList(0, length);
     }
 

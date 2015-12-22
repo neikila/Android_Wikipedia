@@ -18,6 +18,8 @@ import wikipedia.Article;
  */
 public class DbServiceImpl implements DbService {
     private DbHelper dbHelper;
+    private String HISTORY_TIME_DESC_SORT = HistoryOfSearchEntry.COLUMN_NAME_TIME + " DESC";
+    private String ARTICLE_TIME_DESC_SORT = HistoryOfSearchEntry.COLUMN_NAME_TIME + " DESC";
 
     public DbServiceImpl(Context context) {
         dbHelper = new DbHelper(context);
@@ -28,8 +30,14 @@ public class DbServiceImpl implements DbService {
         dbHelper.cleanArticle();
     }
 
+
     @Override
     public List<Article> getArticlesFromHistory() {
+        return getArticlesFromHistory(null);
+    }
+
+    @Override
+    public List<Article> getArticlesFromHistory(Integer length) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String[] projection = {
@@ -38,17 +46,27 @@ public class DbServiceImpl implements DbService {
                 HistoryOfSearchEntry.COLUMN_NAME_LINK
         };
 
-        Cursor c = db.query(HistoryOfSearchEntry.TABLE_NAME, projection, null, null, null, null, null);
-        c.moveToFirst();
+        Cursor c;
+        if(length != null) {
+            c = db.query(HistoryOfSearchEntry.TABLE_NAME, projection,
+                    null, null, null, null, HISTORY_TIME_DESC_SORT, Integer.toString(length));
+        } else {
+            c = db.query(HistoryOfSearchEntry.TABLE_NAME, projection,
+                        null, null, null, null, HISTORY_TIME_DESC_SORT);
+        }
         List<Article> articles = new ArrayList<>();
-        while(!c.isAfterLast()) {
-            Article article = new Article(
-                    c.getString(c.getColumnIndex(HistoryOfSearchEntry.COLUMN_NAME_TITLE)),
-                    c.getString(c.getColumnIndex(HistoryOfSearchEntry.COLUMN_NAME_LOGO)),
-                    c.getString(c.getColumnIndex(HistoryOfSearchEntry.COLUMN_NAME_LINK))
-            );
-            articles.add(article);
-            c.moveToNext();
+
+        if(c.getCount() > 0) {
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                Article article = new Article(
+                        c.getString(c.getColumnIndex(HistoryOfSearchEntry.COLUMN_NAME_TITLE)),
+                        c.getString(c.getColumnIndex(HistoryOfSearchEntry.COLUMN_NAME_LOGO)),
+                        c.getString(c.getColumnIndex(HistoryOfSearchEntry.COLUMN_NAME_LINK))
+                );
+                articles.add(article);
+                c.moveToNext();
+            }
         }
 
         c.close();
@@ -56,12 +74,13 @@ public class DbServiceImpl implements DbService {
     }
 
     @Override
-    public List<Article> getArticlesFromHistory(int length) {
-        return null;
+    public List<Article> getSavedArticles() {
+        return getSavedArticles(null);
     }
 
     @Override
-    public List<Article> getSavedArticles() {
+    public List<Article> getSavedArticles(Integer length) {
+
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String[] projection = {
@@ -71,29 +90,30 @@ public class DbServiceImpl implements DbService {
                 ArticleEntry.COLUMN_NAME_BODY
         };
 
-        Cursor c = db.query(ArticleEntry.TABLE_NAME, projection, null, null, null, null, null);
-        c.moveToFirst();
-        List<Article> articles = new ArrayList<>();
-        while(!c.isAfterLast()) {
-            Article article = new Article(
-                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_TITLE)),
-                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LOGO)),
-                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LINK)),
-                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_BODY))
-            );
-            articles.add(article);
-            c.moveToNext();
+        Cursor c;
+        if(length != null) {
+            c = db.query(ArticleEntry.TABLE_NAME, projection,
+                    null, null, null, null, ARTICLE_TIME_DESC_SORT, Integer.toString(length));
+        } else {
+            c = db.query(ArticleEntry.TABLE_NAME, projection,
+                    null, null, null, null, ARTICLE_TIME_DESC_SORT);
         }
-
+        List<Article> articles = new ArrayList<>();
+        if(c.getCount() > 0) {
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                Article article = new Article(
+                        c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_TITLE)),
+                        c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LOGO)),
+                        c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LINK)),
+                        c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_BODY))
+                );
+                articles.add(article);
+                c.moveToNext();
+            }
+        }
         c.close();
         return articles;
-    }
-
-    @Override
-    public List<Article> getSavedArticles(int length) {
-        Calendar calendar =  Calendar.getInstance();
-        calendar.getTimeInMillis();
-        return null;
     }
 
     @Override
@@ -140,19 +160,22 @@ public class DbServiceImpl implements DbService {
         };
 
         Cursor c = db.query(ArticleEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null);
-        c.moveToFirst();
-        Article article = new  Article(
-                c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_TITLE)),
-                c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LOGO)),
-                c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LINK)),
-                c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_BODY))
-        );
+        Article article = null;
+
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            article = new Article(
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_TITLE)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LOGO)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LINK)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_BODY))
+            );
+        }
 
         c.close();
         return  article;
     }
 
-    //todo
     @Override
     public Article getRandomArticle() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -168,13 +191,17 @@ public class DbServiceImpl implements DbService {
         String limit = "1";
 
         Cursor c = db.query(ArticleEntry.TABLE_NAME, projection, null, null, null, null, orderBy, limit);
-        c.moveToFirst();
-        Article article = new Article(
-                c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_TITLE)),
-                c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LOGO)),
-                c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LINK)),
-                c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_BODY))
-        );
+        Article article = null;
+
+        if(c.getCount() > 0) {
+            c.moveToFirst();
+            article = new Article(
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_TITLE)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LOGO)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LINK)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_BODY))
+            );
+        }
 
         c.close();
         return  article;

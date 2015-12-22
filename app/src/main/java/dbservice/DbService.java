@@ -12,10 +12,10 @@ public interface DbService {
     void clean();
 
     List<Article> getArticlesFromHistory();
-    List<Article> getArticlesFromHistory(int length);
+    List<Article> getArticlesFromHistory(Integer length);
 
     List<Article> getSavedArticles();
-    List<Article> getSavedArticles(int length);
+    List<Article> getSavedArticles(Integer length);
 
     void saveArticleInHistory(Article article);
 

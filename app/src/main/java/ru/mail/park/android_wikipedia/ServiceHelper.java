@@ -12,6 +12,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import utils.BitmapReady;
 import utils.CleanSuccess;
+import utils.NoInternet;
+import utils.NoResult;
 import utils.ResultArticle;
 import utils.UpdateAdapter;
 import wikipedia.Article;
@@ -21,6 +23,7 @@ import wikipedia.Article;
  */
 public class ServiceHelper {
     public static final String ACTION_GET_ARTICLE = "ru.mail.park.android_wikipedia.action.GET_ARTICLE";
+    public static final String ACTION_SEARCH_ARTICLES_BY_TITLE = "ru.mail.park.android_wikipedia.action.SEARCH_ARTICLES_BY_TITLE";
     public static final String ACTION_GET_RANDOM_ARTICLE = "ru.mail.park.android_wikipedia.action.GET_RANDOM_ARTICLE";
     public static final String ACTION_GET_HISTORY = "ru.mail.park.android_wikipedia.action.GET_HISTORY";
     public static final String ACTION_GET_SAVED_ARTICLES = "ru.mail.park.android_wikipedia.action.GET_SAVED_ARTICLES";
@@ -30,59 +33,59 @@ public class ServiceHelper {
 
     public static final String TITLE = "TITLE";
     public static final String AMOUNT = "AMOUNT";
-    public AtomicLong id = new AtomicLong(0);
 
-    public long getArticle(Context context, String title) {
+    public void getArticle(Context context, String title) {
         Intent search = new Intent(context, MyIntentService.class);
         search.setAction(ACTION_GET_ARTICLE);
         search.putExtra(TITLE, title);
         context.startService(search);
-        return id.incrementAndGet();
     }
 
-    public long getRandomArticle(Context context) {
+    public void findArticles(Context context, String title) {
+        Intent search = new Intent(context, MyIntentService.class);
+        search.setAction(ACTION_SEARCH_ARTICLES_BY_TITLE);
+        search.putExtra(TITLE, title);
+        context.startService(search);
+    }
+
+    public void getRandomArticle(Context context) {
         Intent search = new Intent(context, MyIntentService.class);
         search.setAction(ACTION_GET_RANDOM_ARTICLE);
         context.startService(search);
-        return id.incrementAndGet();
     }
 
-    public long getArticlesFromHistory(Context context, int amount) {
+    public void getArticlesFromHistory(Context context, int amount) {
         Intent search = new Intent(context, MyIntentService.class);
         search.setAction(ACTION_GET_HISTORY);
         search.putExtra(AMOUNT, amount);
         context.startService(search);
-        return id.incrementAndGet();
     }
 
-    public long getArticlesFromHistory(Context context) {
-        return getArticlesFromHistory(context, -1);
+    public void getArticlesFromHistory(Context context) {
+        getArticlesFromHistory(context, -1);
     }
 
-    public long getSavedArticles(Context context, int amount) {
+    public void getSavedArticles(Context context, int amount) {
         Intent search = new Intent(context, MyIntentService.class);
         search.setAction(ACTION_GET_SAVED_ARTICLES);
         search.putExtra(AMOUNT, amount);
         context.startService(search);
-        return id.incrementAndGet();
     }
 
-    public long getSavedArticles(Context context) {
-        return getSavedArticles(context, -1);
+    public void getSavedArticles(Context context) {
+        getSavedArticles(context, -1);
     }
 
-    public long cleanDB(Context context) {
+    public void cleanDB(Context context) {
         Intent search = new Intent(context, MyIntentService.class);
         search.setAction(ACTION_CLEAN_DATABASE);
         context.startService(search);
-        return id.incrementAndGet();
     }
 
-    public long getDefaultBitmap(Context context) {
+    public void getDefaultBitmap(Context context) {
         Intent intent = new Intent(context, MyIntentService.class);
         intent.setAction(ACTION_GET_DEFAULT_BITMAP);
         context.startService(intent);
-        return id.incrementAndGet();
     }
 
     public void returnArticle(Application application, Article article) {
@@ -108,6 +111,16 @@ public class ServiceHelper {
     public void updateAdapter(Application application) {
         Bus bus = ((ApplicationModified)application).getBus();
         bus.post(new UpdateAdapter());
+    }
+
+    public void noResult(Application application) {
+        Bus bus = ((ApplicationModified)application).getBus();
+        bus.post(new NoResult());
+    }
+
+    public void noInternetNotification(Application application) {
+        Bus bus = ((ApplicationModified)application).getBus();
+        bus.post(new NoInternet());
     }
 
     public void prepareTestData(Context context) {

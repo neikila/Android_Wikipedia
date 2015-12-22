@@ -58,12 +58,6 @@ public class ArticleFragment extends Fragment {
                         ArticleFragment.this.setArticle();
                     }
                 });
-            } else if (message.getMessageType().equals(OttoMessage.MessageType.UpdateAdapter)) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                    }
-                });
             }
         }
     }
@@ -80,6 +74,7 @@ public class ArticleFragment extends Fragment {
                              Bundle savedInstanceState) {
         Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
         bus.register(this);
+
         View rootView = inflater.inflate(R.layout.fragment_article, container, false);
         tocButton = (FloatingActionButton)rootView.findViewById(R.id.fab);
         tocButton.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +84,7 @@ public class ArticleFragment extends Fragment {
                 tocButton.postDelayed(hideToCButtonRunnable, TOC_BUTTON_HIDE_DELAY);
             }
         });
-        new ServiceHelper().getArticle(getActivity(), "Saved test article");
+        new ServiceHelper().getArticle(getActivity(), title);
         return rootView;
     }
 

@@ -6,16 +6,23 @@ import android.util.Log;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.simple.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import dbservice.DbService;
 import dbservice.DbServiceImpl;
+import rest.MediaWikiCommunicator;
+import rest.MediaWikiCommunicatorImpl;
+import retrofit.RetrofitError;
 import ru.mail.park.android_wikipedia.R;
+import service.WikitextHandler;
 import wikipedia.Article;
 
 /**
@@ -168,5 +175,20 @@ public class Processor {
         temp = new Article("Saved test article1", "profile.jpg", "qwe.com2/2");
         dbService.saveArticle(temp);
         saveToInternalStorage(logo, temp.getTitle(), temp.getLogo());
+    }
+
+    public List<Article> searchArticleByTitle(String title) throws RetrofitError {
+        MediaWikiCommunicator wiki = new MediaWikiCommunicatorImpl();
+        List<Article> list = null;
+        try {
+            List<JSONObject> temp = WikitextHandler.getListOfArticleInGSON(wiki.getListOfArticle(title, -1));
+            list = new ArrayList<>();
+            for (JSONObject obj: temp) {
+                list.add(new Article((String)obj.get(WikitextHandler.TITLE)));
+            }
+        } catch (IOException e) {
+            // TODO error
+        }
+        return list == null ? new ArrayList<Article>(): list;
     }
 }
