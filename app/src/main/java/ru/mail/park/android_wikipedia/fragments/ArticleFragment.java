@@ -2,10 +2,12 @@ package ru.mail.park.android_wikipedia.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.otto.Bus;
@@ -27,6 +29,8 @@ import wikipedia.Article;
 public class ArticleFragment extends Fragment {
     public final static String ARTICLE_TITLE_TAG = "ARTICLE_TITLE";
 
+    private FloatingActionButton tocButton;
+    private static final int TOC_BUTTON_HIDE_DELAY = 2000;
     private Article article;
     private Handler handler;
     private String title;
@@ -76,9 +80,17 @@ public class ArticleFragment extends Fragment {
                              Bundle savedInstanceState) {
         Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
         bus.register(this);
-
+        View rootView = inflater.inflate(R.layout.fragment_article, container, false);
+        tocButton = (FloatingActionButton)rootView.findViewById(R.id.fab);
+        tocButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("ADA");
+                tocButton.postDelayed(hideToCButtonRunnable, TOC_BUTTON_HIDE_DELAY);
+            }
+        });
         new ServiceHelper().getArticle(getActivity(), "Saved test article");
-        return inflater.inflate(R.layout.fragment_article, container, false);
+        return rootView;
     }
 
     @Override
@@ -90,7 +102,16 @@ public class ArticleFragment extends Fragment {
 
     private void setArticle() {
         View view = ArticleFragment.this.getView();
+        ((ImageView)view.findViewById(R.id.main_article_image)).setImageBitmap(article.getLogoBitmap());
         ((TextView)view.findViewById(R.id.article_title)).setText(article.getTitle());
-        ((TextView)view.findViewById(R.id.article_body)).setText("Body: " + article.getBody());
+        ((TextView) view.findViewById(R.id.article_body)).setText("Body: " + article.getBody());
     }
+
+    private Runnable hideToCButtonRunnable = new Runnable() {
+        @Override
+        public void run() {
+            tocButton.hide();
+        }
+    };
+
 }

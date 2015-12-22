@@ -74,9 +74,7 @@ public class BaseActivity extends AppCompatActivity
             setFragment(SettingsFragment.newInstance());
         } else if (id == R.id.nav_main) {
             setFragment(MainFragment.newInstance());
-        } else if (id == R.id.nav_send) {
-
-        } else if (id == R.id.nav_history) {
+        }  else if (id == R.id.nav_history) {
             setFragment(HistoryFragment.newInstance());
         } else if (id == R.id.nav_saved_articles) {
             setFragment(SavedArticlesFragment.newInstance());
