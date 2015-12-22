@@ -89,6 +89,4 @@ public class WikitextHandler {
         String link = jsonThumbnailKey.get("source").toString();
         return link;
     }
-
-
 }

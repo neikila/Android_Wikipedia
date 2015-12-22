@@ -9,13 +9,17 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import dbservice.DbService;
 import dbservice.DbServiceImpl;
+import rest.MediaWikiCommunicator;
+import rest.MediaWikiCommunicatorImpl;
 import ru.mail.park.android_wikipedia.R;
+import service.WikitextHandler;
 import wikipedia.Article;
 
 /**
@@ -168,5 +172,16 @@ public class Processor {
         temp = new Article("Saved test article1", "profile.jpg", "qwe.com2/2");
         dbService.saveArticle(temp);
         saveToInternalStorage(logo, temp.getTitle(), temp.getLogo());
+    }
+
+    public List<Article> searchArticleByTitle(String title) {
+        MediaWikiCommunicator wiki = new MediaWikiCommunicatorImpl();
+        List<Article> list = null;
+        try {
+            WikitextHandler.getListOfArticleInGSON(wiki.getListOfArticle(title, -1));
+        } catch (IOException e) {
+            // TODO error
+        }
+        return list == null ? new ArrayList<Article>(): list;
     }
 }

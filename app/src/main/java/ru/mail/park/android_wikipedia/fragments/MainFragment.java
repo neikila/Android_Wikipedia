@@ -93,7 +93,7 @@ public class MainFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                     Toast.makeText(getActivity(), "Still not implemented\n" + "Query: " + query, Toast.LENGTH_SHORT).show();
-                    new ServiceHelper().getArticle(getActivity(), query);
+                    new ServiceHelper().findArticles(getActivity(), query);
                 return true;
             }
 

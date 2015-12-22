@@ -8,15 +8,16 @@ import android.graphics.Bitmap;
 public class Article {
     private String title;
     private String logo;
-    private String body = "";
+    private String body;
     private String link;
     private Bitmap logoBitmap;
 
+    public Article(String title, String link) {
+        this(title, "", link);
+    }
+
     public Article(String title, String logo, String link) {
-        this.title = title;
-        this.logo = logo;
-        this.link = link;
-        this.logoBitmap = null;
+        this(title, logo, link, "");
     }
 
     public Article(String title, String logo, String link, String body) {
