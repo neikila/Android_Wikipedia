@@ -8,6 +8,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import processor.Processor;
+import retrofit.RetrofitError;
 import wikipedia.Article;
 
 public class MyIntentService extends IntentService {
@@ -76,14 +77,18 @@ public class MyIntentService extends IntentService {
     }
 
     private void handleSearchArticlesByTitle(String title) {
-        List<Article> result = processor.searchArticleByTitle(title);
-        serviceHelper.returnArticle(getApplication(), result);
-        processor.setBitmap(result, new Runnable() {
-            @Override
-            public void run() {
-                serviceHelper.updateAdapter(getApplication());
-            }
-        });
+        try {
+            List<Article> result = processor.searchArticleByTitle(title);
+            serviceHelper.returnArticle(getApplication(), result);
+            processor.setBitmap(result, new Runnable() {
+                @Override
+                public void run() {
+                    serviceHelper.updateAdapter(getApplication());
+                }
+            });
+        } catch (RetrofitError error) {
+            serviceHelper.noInternetNotification(getApplication());
+        }
     }
 
     private void handleCleanDB() {

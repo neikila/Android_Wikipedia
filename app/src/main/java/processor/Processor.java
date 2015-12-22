@@ -20,6 +20,7 @@ import dbservice.DbService;
 import dbservice.DbServiceImpl;
 import rest.MediaWikiCommunicator;
 import rest.MediaWikiCommunicatorImpl;
+import retrofit.RetrofitError;
 import ru.mail.park.android_wikipedia.R;
 import service.WikitextHandler;
 import wikipedia.Article;
@@ -176,7 +177,7 @@ public class Processor {
         saveToInternalStorage(logo, temp.getTitle(), temp.getLogo());
     }
 
-    public List<Article> searchArticleByTitle(String title) {
+    public List<Article> searchArticleByTitle(String title) throws RetrofitError {
         MediaWikiCommunicator wiki = new MediaWikiCommunicatorImpl();
         List<Article> list = null;
         try {
