@@ -82,8 +82,6 @@ public class MainFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    // TODO костыль
-    private boolean isClicked = false;
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
@@ -94,13 +92,8 @@ public class MainFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (!isClicked) {
                     Toast.makeText(getActivity(), "Still not implemented\n" + "Query: " + query, Toast.LENGTH_SHORT).show();
                     new ServiceHelper().getArticle(getActivity(), query);
-                    isClicked = true;
-                } else {
-                    isClicked = false;
-                }
                 return true;
             }
 
