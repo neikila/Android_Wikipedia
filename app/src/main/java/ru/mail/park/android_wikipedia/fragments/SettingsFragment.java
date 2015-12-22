@@ -71,7 +71,6 @@ public class SettingsFragment extends Fragment {
                 new ServiceHelper().cleanDB(getActivity());
             }
         });
-        getActivity().findViewById(R.id.search).setVisibility(View.INVISIBLE);
         return view;
     }
 
@@ -80,7 +79,5 @@ public class SettingsFragment extends Fragment {
         super.onDestroyView();
         Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
         bus.unregister(this);
-
-        getActivity().findViewById(R.id.search).setVisibility(View.VISIBLE);
     }
 }
