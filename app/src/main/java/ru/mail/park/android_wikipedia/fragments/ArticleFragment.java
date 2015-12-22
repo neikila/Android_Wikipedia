@@ -1,21 +1,28 @@
 package ru.mail.park.android_wikipedia.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+
+import java.io.File;
 
 import ru.mail.park.android_wikipedia.ApplicationModified;
 import ru.mail.park.android_wikipedia.R;
@@ -31,6 +38,8 @@ import wikipedia.Article;
  * create an instance of this fragment.
  */
 public class ArticleFragment extends Fragment {
+    public  String webArchivPath;
+    private WebView mWebView;
     public final static String ARTICLE_TITLE_TAG = "ARTICLE_TITLE";
 
     private FloatingActionButton tocButton;
@@ -112,10 +121,58 @@ public class ArticleFragment extends Fragment {
 
     private void setArticle() {
         View view = ArticleFragment.this.getView();
-        ((ImageView)view.findViewById(R.id.main_article_image)).setImageBitmap(article.getLogoBitmap());
-        ((TextView)view.findViewById(R.id.article_title)).setText(article.getTitle());
-        ((TextView) view.findViewById(R.id.article_body)).setText("Body: " + article.getBody());
+//        ((ImageView)view.findViewById(R.id.main_article_image)).setImageBitmap(article.getLogoBitmap());
+//        ((TextView)view.findViewById(R.id.article_title)).setText(article.getTitle());
+//        ((TextView) view.findViewById(R.id.article_body)).setText("Body: " + article.getBody());
+        mWebView = (WebView) view.findViewById(R.id.webView);
+        mWebView.setWebViewClient(new MyWebViewClient());
+        // включаем поддержку JavaScript
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        // указываем страницу загрузки
+        mWebView.loadUrl("https://en.m.wikipedia.org/wiki/Pi");
     }
+
+
+
+    private class MyWebViewClient extends WebViewClient
+    {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url)
+        {
+            view.loadUrl(url);
+            return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+
+            //view.loadUrl("javascript: (function(){document.getElementById(\"section_0\").innerHTML = \"yourTextHere\"; })()");
+            view.loadUrl("javascript: (function(){document.getElementById(\"mw-mf-main-menu-button\").remove();" +
+                    "document.getElementById(\"searchInput\").remove();" +
+                    "document.getElementById(\"ca-edit\").remove();" +
+                    "document.getElementById(\"ca-watch\").remove();" +
+                    "document.getElementById(\"siteNotice\").remove();" +
+                    " })()");
+            //showToast(url);
+
+            //String path = getFilesDir().getAbsolutePath() + File.separator + "Pi" + ".mht";
+            //mWebView.saveWebArchive(path);
+            //mWebView.loadUrl("file://"+path);
+
+        }
+    }
+
+    public void showToast(String path) {
+        //создаем и отображаем текстовое уведомление
+        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                path,
+                Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
+
 
     private Runnable hideToCButtonRunnable = new Runnable() {
         @Override
