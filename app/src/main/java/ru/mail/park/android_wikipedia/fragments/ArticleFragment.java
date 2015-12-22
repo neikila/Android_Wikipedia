@@ -77,7 +77,7 @@ public class ArticleFragment extends Fragment {
         Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
         bus.register(this);
 
-        new ServiceHelper().getArticle(getActivity(), "Saved test article");
+        new ServiceHelper().getArticle(getActivity(), title);
         return inflater.inflate(R.layout.fragment_article, container, false);
     }
 
