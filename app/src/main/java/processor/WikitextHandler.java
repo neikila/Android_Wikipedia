@@ -1,4 +1,4 @@
-package service;
+package processor;
 
 import info.bliki.wiki.filter.PlainTextConverter;
 import info.bliki.wiki.model.WikiModel;
