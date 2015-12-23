@@ -1,5 +1,7 @@
 package processor;
 
+import android.util.Log;
+
 import info.bliki.wiki.filter.PlainTextConverter;
 import info.bliki.wiki.model.WikiModel;
 import org.json.simple.JSONArray;
@@ -85,16 +87,24 @@ public class WikitextHandler {
     }
 
     public static String getLinkImageTitle(String rawWikiText) throws ParseException {
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(rawWikiText);
-        JSONObject jsonObj = (JSONObject) obj;
-        JSONObject jsonQueryKey = (JSONObject) jsonObj.get(QUERY);
-        JSONObject jsonPagesKey = (JSONObject) jsonQueryKey.get(PAGES);
-        Object[] idPage = jsonPagesKey.keySet().toArray();
-        String idP = idPage[0].toString();
-        JSONObject jsonIdPageKey = (JSONObject) jsonPagesKey.get(idP);
-        JSONObject jsonThumbnailKey = (JSONObject) jsonIdPageKey.get(THUMBNAIL);
-        String link = jsonThumbnailKey.get(SOURCE).toString();
+        String link = null;
+        try {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(rawWikiText);
+            JSONObject jsonObj = (JSONObject) obj;
+            JSONObject jsonQueryKey = (JSONObject) jsonObj.get(QUERY);
+            JSONObject jsonPagesKey = (JSONObject) jsonQueryKey.get(PAGES);
+            Object[] idPage = jsonPagesKey.keySet().toArray();
+            String idP = idPage[0].toString();
+            JSONObject jsonIdPageKey = (JSONObject) jsonPagesKey.get(idP);
+            JSONObject jsonThumbnailKey = (JSONObject) jsonIdPageKey.get(THUMBNAIL);
+            link = jsonThumbnailKey.get(SOURCE).toString();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            link = null;
+        }
         return link;
     }
+
+
 }
