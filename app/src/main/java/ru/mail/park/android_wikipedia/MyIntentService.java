@@ -42,6 +42,8 @@ public class MyIntentService extends IntentService {
                 handleGetDefaultBitmap();
             } else if (ServiceHelper.ACTION_PREPARE_TEST_DATA.equals(action)) {
                 handlePrepareTestData();
+            } else if (ServiceHelper.ACTION_SAVE_IN_HISTORY.equals(action)) {
+                handleSaveInHistory(intent.getStringExtra(ServiceHelper.TITLE));
             }
         }
     }
@@ -103,5 +105,9 @@ public class MyIntentService extends IntentService {
 
     private void handlePrepareTestData() {
         processor.prepareTestData();
+    }
+
+    private void handleSaveInHistory(String title) {
+        processor.saveInHistory(title);
     }
 }

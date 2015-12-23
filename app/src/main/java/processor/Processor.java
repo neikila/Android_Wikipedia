@@ -35,6 +35,7 @@ public class Processor {
     private DbService dbService;
     private Context context;
     final private static String IMAGE_DIR = "imageDir";
+    final private static String LOGO_DEF = "main";
 
     public Processor(Context context) {
         this.context = context;
@@ -241,6 +242,9 @@ public class Processor {
         } catch (NullPointerException e) {
             Log.d("hardcodeArticles", "Не так быстро!Я не успел сохранить статью!");
         }
+    }
 
+    public void saveInHistory(String title) {
+        dbService.saveArticleInHistory(new Article(title, LOGO_DEF));
     }
 }

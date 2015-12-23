@@ -93,6 +93,9 @@ public class BaseActivity extends AppCompatActivity
     }
 
     public void openArticle(String title) {
+        new ServiceHelper().saveInHistory(this, title);
         setFragment(ArticleFragment.newInstance(title));
     }
+
+
 }

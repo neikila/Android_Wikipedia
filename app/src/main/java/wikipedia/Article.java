@@ -16,8 +16,8 @@ public class Article {
         this(title, "");
     }
 
-    public Article(String title, String link) {
-        this(title, "", link);
+    public Article(String title, String logo) {
+        this(title, logo, "");
     }
 
     public Article(String title, String logo, String link) {

@@ -30,6 +30,7 @@ public class ServiceHelper {
     public static final String ACTION_CLEAN_DATABASE = "ru.mail.park.android_wikipedia.action.CLEAN_DATABASE";
     public static final String ACTION_GET_DEFAULT_BITMAP = "ru.mail.park.android_wikipedia.action.GET_DEFAULT_BITMAP";
     public static final String ACTION_PREPARE_TEST_DATA = "ru.mail.park.android_wikipedia.action.PREPARE_TEST_DATA";
+    public static final String ACTION_SAVE_IN_HISTORY = "ru.mail.park.android_wikipedia.action.SAVE_IN_HISTORY";
 
     public static final String TITLE = "TITLE";
     public static final String AMOUNT = "AMOUNT";
@@ -126,6 +127,13 @@ public class ServiceHelper {
     public void prepareTestData(Context context) {
         Intent intent = new Intent(context, MyIntentService.class);
         intent.setAction(ACTION_PREPARE_TEST_DATA);
+        context.startService(intent);
+    }
+
+    public void saveInHistory(Context context, String title) {
+        Intent intent = new Intent(context, MyIntentService.class);
+        intent.setAction(ACTION_SAVE_IN_HISTORY);
+        intent.putExtra(TITLE, title);
         context.startService(intent);
     }
 }
