@@ -220,7 +220,7 @@ public class DbServiceImpl implements DbService {
                 ArticleEntry.COLUMN_NAME_BODY
         };
 
-        String selection = ArticleEntry.COLUMN_NAME_TITLE + " LIKE '?'";
+        String selection = ArticleEntry.COLUMN_NAME_TITLE + " LIKE ?";
         String selectionArgs[] = {
                 title
         };
