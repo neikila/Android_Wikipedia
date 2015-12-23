@@ -3,10 +3,13 @@ package processor;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,11 +24,14 @@ import rest.MediaWikiCommunicatorImpl;
 import retrofit.RetrofitError;
 import ru.mail.park.android_wikipedia.R;
 import wikipedia.Article;
+import java.io.IOException;
+
 
 /**
  * Created by neikila on 16.12.15.
  */
 public class Processor {
+    private MediaWikiCommunicator wiki = new MediaWikiCommunicatorImpl();
     private DbService dbService;
     private Context context;
     final private static String IMAGE_DIR = "imageDir";
@@ -75,6 +81,13 @@ public class Processor {
     private void setBitmap(Article article) {
         Bitmap logo;
         logo = loadImageFromStorage(article.getTitle(), article.getLogo());
+        if (logo == null) {
+            try {
+                logo = loadImageFromWeb(article.getTitle());
+            } catch (ParseException | RetrofitError e) {
+                e.printStackTrace();
+            }
+        }
         article.setLogoBitmap(logo);
     }
 
@@ -91,6 +104,35 @@ public class Processor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return bitmap;
+    }
+
+    public Bitmap loadImageFromWeb(String tile) throws ParseException {
+        Bitmap bitmap = null;
+        String rawLink = null;
+        try {
+            rawLink = wiki.getRawLinkImageTitle(tile, 200);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String linkOnImage = "";
+
+        try {
+            linkOnImage = WikitextHandler.getLinkImageTitle(rawLink);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            bitmap = Picasso
+                    .with(context)
+                    .load(linkOnImage)
+                    .get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return bitmap;
     }
 
@@ -175,7 +217,6 @@ public class Processor {
     }
 
     public List<Article> searchArticleByTitle(String title) throws RetrofitError {
-        MediaWikiCommunicator wiki = new MediaWikiCommunicatorImpl();
         List<Article> list = null;
         try {
             List<JSONObject> temp = WikitextHandler.getListOfArticleInGSON(wiki.getListOfArticle(title, -1));
@@ -187,5 +228,19 @@ public class Processor {
             // TODO error
         }
         return list == null ? new ArrayList<Article>(): list;
+    }
+
+    public void showToast(String path) {
+        //создаем и отображаем текстовое уведомление
+        try {
+            Toast toast = Toast.makeText(context.getApplicationContext(),
+                    path,
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        } catch (NullPointerException e) {
+            Log.d("hardcodeArticles", "Не так быстро!Я не успел сохранить статью!");
+        }
+
     }
 }
