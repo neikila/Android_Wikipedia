@@ -29,6 +29,10 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         this(listener, new ArrayList<Article>(), layoutId);
     }
 
+    public ArticlesAdapter(View.OnClickListener listener, List<Article> articleList) {
+        this(listener, articleList, R.layout.article_card_horizontal);
+    }
+
     public ArticlesAdapter(View.OnClickListener listener, List<Article> articleList, int layoutId) {
         this.listener = listener;
         this.articleInfoList = articleList;

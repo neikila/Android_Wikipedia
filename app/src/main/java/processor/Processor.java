@@ -12,9 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import dbservice.DbService;
 import dbservice.DbServiceImpl;
@@ -22,7 +20,6 @@ import rest.MediaWikiCommunicator;
 import rest.MediaWikiCommunicatorImpl;
 import retrofit.RetrofitError;
 import ru.mail.park.android_wikipedia.R;
-import service.WikitextHandler;
 import wikipedia.Article;
 
 /**

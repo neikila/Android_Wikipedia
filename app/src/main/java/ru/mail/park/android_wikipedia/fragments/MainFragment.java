@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.util.List;
+
 import ru.mail.park.android_wikipedia.ApplicationModified;
 import ru.mail.park.android_wikipedia.ArticlesAdapter;
 import ru.mail.park.android_wikipedia.BaseActivity;
@@ -25,10 +27,12 @@ import ru.mail.park.android_wikipedia.R;
 import ru.mail.park.android_wikipedia.ServiceHelper;
 import utils.OttoMessage;
 import utils.ResultArticle;
+import wikipedia.Article;
 
 public class MainFragment extends Fragment {
     private Handler handler;
     private RecyclerView recList;
+    private static List<Article> articlesList;
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
@@ -49,7 +53,8 @@ public class MainFragment extends Fragment {
                     @Override
                     public void run() {
                         ArticlesAdapter adapter = (ArticlesAdapter) recList.getAdapter();
-                        adapter.setArticles(((ResultArticle) message).getArticles());
+                        articlesList = ((ResultArticle) message).getArticles();
+                        adapter.setArticles(articlesList);
                         adapter.notifyDataSetChanged();
                     }
                 });
@@ -123,17 +128,22 @@ public class MainFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(this.getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
-
-        ArticlesAdapter articlesAdapter = new ArticlesAdapter(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String title = ((TextView) v.findViewById(R.id.title)).getText().toString();
                 ((BaseActivity) getActivity()).openArticle(title);
             }
-        });
+        };
+        ArticlesAdapter articlesAdapter;
+        if (articlesList == null) {
+            articlesAdapter = new ArticlesAdapter(listener);
+            new ServiceHelper().getSavedArticles(this.getActivity());
+        } else {
+            articlesAdapter = new ArticlesAdapter(listener, articlesList);
+        }
         recList.setAdapter(articlesAdapter);
 
-        new ServiceHelper().getSavedArticles(this.getActivity());
         return myFragment;
     }
 
@@ -144,5 +154,9 @@ public class MainFragment extends Fragment {
         super.onDestroyView();
         Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
         bus.unregister(this);
+    }
+
+    public static void refresh() {
+        articlesList = null;
     }
 }

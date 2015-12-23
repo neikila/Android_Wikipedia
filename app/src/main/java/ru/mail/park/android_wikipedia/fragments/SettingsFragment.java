@@ -76,6 +76,7 @@ public class SettingsFragment extends Fragment {
         cleanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainFragment.refresh();
                 new ServiceHelper().cleanDB(getActivity());
             }
         });
