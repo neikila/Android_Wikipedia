@@ -33,6 +33,7 @@ public class MainFragment extends Fragment {
     private Handler handler;
     private RecyclerView recList;
     private static List<Article> articlesList;
+    private static Boolean noResults = false;
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
@@ -56,8 +57,10 @@ public class MainFragment extends Fragment {
                         articlesList = ((ResultArticle) message).getArticles();
                         TextView no_Results = (TextView) getActivity().findViewById(R.id.NoResultMessage);
                         if(articlesList.size() != 0) {
+                            noResults = false;
                             no_Results.setVisibility(View.GONE);
                         } else {
+                            noResults = true;
                             no_Results.setVisibility(View.VISIBLE);
                         }
                         adapter.setArticles(articlesList);
@@ -149,6 +152,10 @@ public class MainFragment extends Fragment {
             articlesAdapter = new ArticlesAdapter(listener, articlesList);
         }
         recList.setAdapter(articlesAdapter);
+        if(noResults) {
+            TextView no_Results = (TextView) myFragment.findViewById(R.id.NoResultMessage);
+            no_Results.setVisibility(View.VISIBLE);
+        }
 
         return myFragment;
     }
