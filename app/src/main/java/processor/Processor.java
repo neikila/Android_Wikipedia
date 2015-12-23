@@ -36,12 +36,10 @@ public class Processor {
     private DbService dbService;
     private Context context;
     final private static String IMAGE_DIR = "imageDir";
-    final private CustomSettings settings;
 
     public Processor(Context context) {
         this.context = context;
         dbService = new DbServiceImpl(context);
-        settings = new CustomSettings(context);
     }
 
     public Article getArticleByTitle(String title) {
@@ -136,7 +134,7 @@ public class Processor {
             e.printStackTrace();
         }
 
-        saveToInternalStorage(bitmap, tile, "main");
+        //saveToInternalStorage(bitmap, tile, "main");
         return bitmap;
     }
 
@@ -224,6 +222,7 @@ public class Processor {
 
     public List<Article> searchArticleByTitle(String title) throws RetrofitError {
         List<Article> list = new ArrayList<>();
+        CustomSettings settings = new CustomSettings(context);
         if (settings.getOfflineSettings()) {
             List<Article> temp = dbService.getArticleLikeByTitle(title);
             for (Article article: temp) {
