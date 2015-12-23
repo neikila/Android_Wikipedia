@@ -32,4 +32,9 @@ public final class HistoryOfSearchContract {
             "DROP TABLE IF EXIST " + HistoryOfSearchEntry.TABLE_NAME;
 
     public static final String SQL_DELETE_ENTRIES = "DELETE FROM " + HistoryOfSearchEntry.TABLE_NAME;
+
+    public static final String SQL_DELETE_NOT_LAST_50_ENTRIES = "DELETE FROM "
+            + HistoryOfSearchEntry.TABLE_NAME + " WHERE " + HistoryOfSearchEntry._ID + "NOT IN (SELECT "
+            + HistoryOfSearchEntry._ID + " FROM " + HistoryOfSearchEntry.TABLE_NAME + " ORDER BY "
+            + HistoryOfSearchEntry.COLUMN_NAME_TIME + " DESC LIMIT 50";
 }

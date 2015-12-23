@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import dbservice.contracts.ArticleContract.ArticleEntry;
+import dbservice.contracts.HistoryOfSearchContract;
 import dbservice.contracts.HistoryOfSearchContract.HistoryOfSearchEntry;
 import wikipedia.Article;
 
@@ -127,6 +128,7 @@ public class DbServiceImpl implements DbService {
         values.put(HistoryOfSearchEntry.COLUMN_NAME_TIME, Calendar.getInstance().getTimeInMillis());
 
         db.insert(HistoryOfSearchEntry.TABLE_NAME, null, values);
+        db.execSQL(HistoryOfSearchContract.SQL_DELETE_NOT_LAST_50_ENTRIES);
     }
 
     @Override
