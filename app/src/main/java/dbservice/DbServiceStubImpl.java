@@ -78,7 +78,7 @@ public class DbServiceStubImpl implements DbService {
     }
 
     @Override
-    public Article getArticleLikeByTitle(String title) {
+    public List<Article> getArticleLikeByTitle(String title) {
         return null;
     }
 }
