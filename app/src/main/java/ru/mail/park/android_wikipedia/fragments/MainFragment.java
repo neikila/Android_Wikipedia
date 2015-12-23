@@ -29,6 +29,7 @@ import utils.ResultArticle;
 public class MainFragment extends Fragment {
     private Handler handler;
     private RecyclerView recList;
+    private static ArticlesAdapter articlesAdapter;
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
@@ -124,16 +125,18 @@ public class MainFragment extends Fragment {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
 
-        ArticlesAdapter articlesAdapter = new ArticlesAdapter(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String title = ((TextView) v.findViewById(R.id.title)).getText().toString();
-                ((BaseActivity) getActivity()).openArticle(title);
-            }
-        });
+        if (articlesAdapter == null) {
+            articlesAdapter = new ArticlesAdapter(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String title = ((TextView) v.findViewById(R.id.title)).getText().toString();
+                    ((BaseActivity) getActivity()).openArticle(title);
+                }
+            });
+            new ServiceHelper().getSavedArticles(this.getActivity());
+        }
         recList.setAdapter(articlesAdapter);
 
-        new ServiceHelper().getSavedArticles(this.getActivity());
         return myFragment;
     }
 
