@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -50,6 +53,7 @@ public class ArticleFragment extends Fragment {
     private Handler handler;
     private String title;
     private String newTitle; // для перехода по ссылкам
+    private SubMenu subMenu;
 
     public static ArticleFragment newInstance(String title) {
         ArticleFragment fragment = new ArticleFragment();
@@ -102,12 +106,22 @@ public class ArticleFragment extends Fragment {
         });
         new ServiceHelper().getArticle(getActivity(), title);
         setArticle(rootView);
+        setHasOptionsMenu(true);
         return rootView;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        subMenu = navigationView.getMenu().addSubMenu("Меню статьи");
+        MenuItem save = subMenu.add("Сохранить");
+        save.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
 //        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 //        toolbar.setVisibility(View.GONE);
 //        DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.base_activity);
@@ -121,6 +135,7 @@ public class ArticleFragment extends Fragment {
         super.onDestroyView();
         Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
         bus.unregister(this);
+        subMenu.clear();
     }
 
     private void setArticle(View view) {
@@ -142,8 +157,6 @@ public class ArticleFragment extends Fragment {
         View view = ArticleFragment.this.getView();
         setArticle(view);
     }
-
-
 
     private class MyWebViewClient extends WebViewClient
     {
@@ -170,7 +183,6 @@ public class ArticleFragment extends Fragment {
                     "document.getElementById(\"ca-watch\").remove();" +
                     "document.getElementById(\"siteNotice\").remove();" +
                     " })()");
-
 
             saveArticleInMHT();
 
@@ -200,7 +212,6 @@ public class ArticleFragment extends Fragment {
 
         mWebView.saveWebArchive(webArchivPath);
         showToast("Save in file://" + webArchivPath);
-
     }
 
     public void showToast(String path) {
@@ -217,12 +228,10 @@ public class ArticleFragment extends Fragment {
 
     }
 
-
     private Runnable hideToCButtonRunnable = new Runnable() {
         @Override
         public void run() {
             tocButton.hide();
         }
     };
-
 }
