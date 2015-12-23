@@ -82,7 +82,7 @@ public class ArticleFragment extends Fragment {
 //                        ArticleFragment.this.setArticle();
                         webArchivPath = getActivity().getFilesDir().getAbsolutePath() + File.separator + article.getTitle() + ".mht";
                         mWebView.loadUrl("file://" + webArchivPath);
-                        showToast("from db");
+//                        showToast("from db");
                     }
                 });
             } else if (message.getMessageType().equals(OttoMessage.MessageType.NoResult)) {
@@ -94,7 +94,7 @@ public class ArticleFragment extends Fragment {
                         // включаем поддержку JavaScript
                         mWebView.getSettings().setJavaScriptEnabled(true);
                         mWebView.loadUrl("https://ru.m.wikipedia.org/wiki/" + title);
-                        showToast("from web");
+//                        showToast("from web");
                     }
                 });
             }
@@ -115,14 +115,6 @@ public class ArticleFragment extends Fragment {
         bus.register(this);
 
         View rootView = inflater.inflate(R.layout.fragment_article, container, false);
-        tocButton = (FloatingActionButton)rootView.findViewById(R.id.fab);
-        tocButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("ADA");
-                tocButton.postDelayed(hideToCButtonRunnable, TOC_BUTTON_HIDE_DELAY);
-            }
-        });
         new ServiceHelper().getArticle(getActivity(), title);
         setArticle(rootView);
         setHasOptionsMenu(true);
@@ -223,7 +215,7 @@ public class ArticleFragment extends Fragment {
         new ServiceHelper().saveInDB(getContext(), title);
         SavedArticlesFragment.refresh();
         HistoryFragment.refresh();
-        showToast("Save in file://" + webArchivPath);
+//        showToast("Save in file://" + webArchivPath);
     }
 
     public void showToast(String path) {

@@ -113,7 +113,7 @@ public class MainFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getActivity(), "Still not implemented\n" + "Query: " + query, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Still not implemented\n" + "Query: " + query, Toast.LENGTH_SHORT).show();
                 new ServiceHelper().findArticles(getActivity(), query);
                 return true;
             }

@@ -114,10 +114,10 @@ public class HistoryFragment extends Fragment {
         };
         ArticlesAdapter articlesAdapter;
         if (articlesList == null) {
-            articlesAdapter = new ArticlesAdapter(listener);
+            articlesAdapter = new ArticlesAdapter(listener, R.layout.article_card_horizontal_no_image);
             new ServiceHelper().getArticlesFromHistory(this.getActivity());
         } else {
-            articlesAdapter = new ArticlesAdapter(listener, articlesList);
+            articlesAdapter = new ArticlesAdapter(listener, articlesList, R.layout.article_card_horizontal_no_image);
         }
         recList.setAdapter(articlesAdapter);
         if(noResults) {
