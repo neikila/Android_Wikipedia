@@ -133,8 +133,11 @@ public class Processor {
             e.printStackTrace();
         }
 
+        saveToInternalStorage(bitmap, tile, "main");
         return bitmap;
     }
+
+
 
     public String saveToInternalStorage(Bitmap bitmapImage, String articleName, String filename) {
         File directory = context.getDir(IMAGE_DIR, Context.MODE_PRIVATE);
