@@ -16,13 +16,14 @@
             android:text="@string/def_message"
             android:gravity="center"
             android:textColor="#222"
+            android:textSize="30sp"
             />
 
         <ListView
             android:id="@+id/listWords"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/hello_world"
+            android:layout_below="@id/NoResultMessage"
             android:layout_marginTop="10dp" />
     </RelativeLayout>
 

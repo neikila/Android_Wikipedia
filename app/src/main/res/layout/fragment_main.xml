@@ -15,6 +15,7 @@
         android:text="@string/def_message"
         android:gravity="center"
         android:textColor="#222"
+        android:textSize="30sp"
         />
 
     <android.support.v7.widget.RecyclerView
