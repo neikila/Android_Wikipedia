@@ -41,7 +41,7 @@ public class WikitextHandler {
             JSONObject tmp = new JSONObject();
             tmp.put(TITLE, jsonSearchElement.get(TITLE));
 
-            WikiModel wikiModel = new WikiModel("https://en.wikipedia.org/wiki/${image}", "https://en.wikipedia.org/wiki/${title}");
+            WikiModel wikiModel = new WikiModel("https://ru.wikipedia.org/wiki/${image}", "https://ru.wikipedia.org/wiki/${title}");
 
             String plainStr = wikiModel.render(new PlainTextConverter(), (String) jsonSearchElement.get(SNIPPET));
             tmp.put(SNIPPET, plainStr);
@@ -69,7 +69,7 @@ public class WikitextHandler {
 
     public static String getHTMLfromWikiText(String rawWikiText) throws ParseException {
         String WikiText = getWikiText(rawWikiText);
-        WikiModel wikiModel = new WikiModel("https://en.wikipedia.org/wiki/${image}", "https://en.wikipedia.org/wiki/${title}");
+        WikiModel wikiModel = new WikiModel("https://ru.wikipedia.org/wiki/${image}", "https://ru.wikipedia.org/wiki/${title}");
         String htmlText = wikiModel.toHtml(WikiText);
         return htmlText;
     }
@@ -77,7 +77,7 @@ public class WikitextHandler {
     public static String getPlainTextFromWikiText(String rawWikiText) throws ParseException {
         String WikiText = getWikiText(rawWikiText);
 
-        WikiModel wikiModel = new WikiModel("https://en.wikipedia.org/wiki/${image}", "https://en.wikipedia.org/wiki/${title}");
+        WikiModel wikiModel = new WikiModel("https://ru.wikipedia.org/wiki/${image}", "https://ru.wikipedia.org/wiki/${title}");
         String plainStr = wikiModel.render(new PlainTextConverter(), WikiText);
 
         return plainStr;

@@ -12,32 +12,14 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
-
-                <ImageView
-                    android:id="@+id/main_article_image"
+                <WebView
+                    android:id="@+id/webView"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:background="@color/colorPrimary"/>
+                    android:layout_height="match_parent"
+                    android:text="@string/show_my_web_view" />
 
-                <TextView
-                    android:id="@+id/article_title"
-                    android:textColor="@color/my_primary_text"
-                    android:layout_below="@id/main_article_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
 
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/no_article_title" />
-
-                <TextView
-                    android:id="@+id/article_body"
-                    android:layout_width="wrap_content"
-                    android:textColor="@color/my_secondary_text"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/article_title"
-                    android:paddingTop="2dp"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/show_article_button_text" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"

@@ -28,7 +28,7 @@ public class MediaWikiCommunicatorImpl implements MediaWikiCommunicator {
     private RestAdapter retrofit;
 
     public MediaWikiCommunicatorImpl(){
-        retrofit = new RestAdapter.Builder().setEndpoint("https://en.wikipedia.org/w/api.php").build();
+        retrofit = new RestAdapter.Builder().setEndpoint("https://ru.wikipedia.org/w/api.php").build();
         //retrofit = new RestAdapter.Builder().setEndpoint("https://upload.wikimedia.org").build();
         service = retrofit.create(MediaWikiApi.class);
     }
