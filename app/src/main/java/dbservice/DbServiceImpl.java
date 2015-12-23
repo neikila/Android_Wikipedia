@@ -3,6 +3,7 @@ package dbservice;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -121,7 +122,6 @@ public class DbServiceImpl implements DbService {
     @Override
     public void saveArticleInHistory(Article article) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-
         try {
             ContentValues values = new ContentValues();
             values.put(HistoryOfSearchEntry.COLUMN_NAME_TITLE, article.getTitle());
@@ -129,9 +129,10 @@ public class DbServiceImpl implements DbService {
             values.put(HistoryOfSearchEntry.COLUMN_NAME_LOGO, article.getLogo());
             values.put(HistoryOfSearchEntry.COLUMN_NAME_TIME, Calendar.getInstance().getTimeInMillis());
 
-            db.insert(HistoryOfSearchEntry.TABLE_NAME, null, values);
+            db.insertOrThrow(HistoryOfSearchEntry.TABLE_NAME, null, values);
             db.execSQL(HistoryOfSearchContract.SQL_DELETE_NOT_LAST_50_ENTRIES);
-        } catch (Exception e) {
+        } catch (SQLException ignored) {
+            ignored.printStackTrace();
         }
     }
 
@@ -139,17 +140,16 @@ public class DbServiceImpl implements DbService {
     public void saveArticle(Article article) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
+            ContentValues values = new ContentValues();
+            values.put(ArticleEntry.COLUMN_NAME_TITLE, article.getTitle());
+            values.put(ArticleEntry.COLUMN_NAME_BODY, article.getBody());
+            values.put(ArticleEntry.COLUMN_NAME_LOGO, article.getLogo());
+            values.put(ArticleEntry.COLUMN_NAME_LINK, article.getLink());
+            values.put(ArticleEntry.COLUMN_NAME_TIME, Calendar.getInstance().getTimeInMillis());
 
-        ContentValues values = new ContentValues();
-        values.put(ArticleEntry.COLUMN_NAME_TITLE, article.getTitle());
-        values.put(ArticleEntry.COLUMN_NAME_BODY, article.getBody());
-        values.put(ArticleEntry.COLUMN_NAME_LOGO, article.getLogo());
-        values.put(ArticleEntry.COLUMN_NAME_LINK, article.getLink());
-        values.put(ArticleEntry.COLUMN_NAME_TIME, Calendar.getInstance().getTimeInMillis());
-
-        db.insert(ArticleEntry.TABLE_NAME, null, values);
-        } catch (Exception e) {
-
+            db.insert(ArticleEntry.TABLE_NAME, null, values);
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
     }
 
