@@ -76,4 +76,9 @@ public class DbServiceStubImpl implements DbService {
         Random random = new Random();
         return new ArrayList<>(articleMap.values()).get(random.nextInt(articleMap.size()));
     }
+
+    @Override
+    public Article getArticleLikeByTitle(String title) {
+        return null;
+    }
 }

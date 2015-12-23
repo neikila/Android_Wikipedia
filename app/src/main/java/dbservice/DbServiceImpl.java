@@ -208,4 +208,37 @@ public class DbServiceImpl implements DbService {
         c.close();
         return  article;
     }
+
+    @Override
+    public Article getArticleLikeByTitle(String title) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                ArticleEntry.COLUMN_NAME_TITLE,
+                ArticleEntry.COLUMN_NAME_LOGO,
+                ArticleEntry.COLUMN_NAME_LINK,
+                ArticleEntry.COLUMN_NAME_BODY
+        };
+
+        String selection = ArticleEntry.COLUMN_NAME_TITLE + " LIKE '?'";
+        String selectionArgs[] = {
+                title
+        };
+
+        Cursor c = db.query(ArticleEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+        Article article = null;
+
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            article = new Article(
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_TITLE)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LOGO)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LINK)),
+                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_BODY))
+            );
+        }
+
+        c.close();
+        return  article;
+    }
 }
