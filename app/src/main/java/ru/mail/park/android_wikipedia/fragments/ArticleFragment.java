@@ -74,8 +74,27 @@ public class ArticleFragment extends Fragment {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        mWebView = (WebView) getView().findViewById(R.id.webView);
+                        mWebView.setWebViewClient(new MyWebViewClient());
+                        // включаем поддержку JavaScript
+                        mWebView.getSettings().setJavaScriptEnabled(true);
                         article = ((ResultArticle)message).getArticle();
-                        ArticleFragment.this.setArticle();
+//                        ArticleFragment.this.setArticle();
+                        webArchivPath = getActivity().getFilesDir().getAbsolutePath() + File.separator + article.getTitle() + ".mht";
+                        mWebView.loadUrl("file://" + webArchivPath);
+                        showToast("from db");
+                    }
+                });
+            } else if (message.getMessageType().equals(OttoMessage.MessageType.NoResult)) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mWebView = (WebView) getView().findViewById(R.id.webView);
+                        mWebView.setWebViewClient(new MyWebViewClient());
+                        // включаем поддержку JavaScript
+                        mWebView.getSettings().setJavaScriptEnabled(true);
+                        mWebView.loadUrl("https://ru.m.wikipedia.org/wiki/" + title);
+                        showToast("from web");
                     }
                 });
             }
@@ -119,6 +138,7 @@ public class ArticleFragment extends Fragment {
         save.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                saveArticleInMHT();
                 return false;
             }
         });
@@ -139,18 +159,7 @@ public class ArticleFragment extends Fragment {
     }
 
     private void setArticle(View view) {
-//        ((ImageView)view.findViewById(R.id.main_article_image)).setImageBitmap(article.getLogoBitmap());
-//        ((TextView)view.findViewById(R.id.article_title)).setText(article.getTitle());
-//        ((TextView) view.findViewById(R.id.article_body)).setText("Body: " + article.getBody());
-        mWebView = (WebView) view.findViewById(R.id.webView);
-        mWebView.setWebViewClient(new MyWebViewClient());
-        // включаем поддержку JavaScript
-        mWebView.getSettings().setJavaScriptEnabled(true);
 
-        // указываем страницу загрузки
-        //заглушка
-        //mWebView.loadUrl("https://en.m.wikipedia.org/wiki/" + "Pi");
-        mWebView.loadUrl("https://ru.m.wikipedia.org/wiki/" + title);
     }
 
     private void setArticle() {
@@ -184,7 +193,7 @@ public class ArticleFragment extends Fragment {
                     "document.getElementById(\"siteNotice\").remove();" +
                     " })()");
 
-            saveArticleInMHT();
+            //saveArticleInMHT();
 
             //для загрузки сохраненной страницы
             //mWebView.loadUrl("file://"+path);
@@ -201,7 +210,7 @@ public class ArticleFragment extends Fragment {
         try {
             String AllUrl = mWebView.getUrl();
             newTitle = AllUrl.substring(domen.length(), AllUrl.length());
-            webArchivPath = getActivity().getFilesDir().getAbsolutePath() + File.separator + newTitle + ".mht";
+            webArchivPath = getActivity().getFilesDir().getAbsolutePath() + File.separator + title + ".mht";
         } catch (NullPointerException e) {
             try {
                 webArchivPath = getActivity().getFilesDir().getAbsolutePath() + File.separator + title + ".mht";
@@ -211,6 +220,9 @@ public class ArticleFragment extends Fragment {
         }
 
         mWebView.saveWebArchive(webArchivPath);
+        new ServiceHelper().saveInDB(getContext(), title);
+        SavedArticlesFragment.refresh();
+        HistoryFragment.refresh();
         showToast("Save in file://" + webArchivPath);
     }
 

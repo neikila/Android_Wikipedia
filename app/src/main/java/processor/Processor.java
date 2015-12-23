@@ -258,4 +258,8 @@ public class Processor {
     public void saveInHistory(String title) {
         dbService.saveArticleInHistory(new Article(title, LOGO_DEF));
     }
+
+    public void saveInDB(String title) {
+        dbService.saveArticle(new Article(title, LOGO_DEF));
+    }
 }

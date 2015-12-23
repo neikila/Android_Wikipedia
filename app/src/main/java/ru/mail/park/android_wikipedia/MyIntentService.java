@@ -44,6 +44,8 @@ public class MyIntentService extends IntentService {
                 handlePrepareTestData();
             } else if (ServiceHelper.ACTION_SAVE_IN_HISTORY.equals(action)) {
                 handleSaveInHistory(intent.getStringExtra(ServiceHelper.TITLE));
+            } else if (ServiceHelper.ACTION_SAVE.equals(action)) {
+                handleSaveInDB(intent.getStringExtra(ServiceHelper.TITLE));
             }
         }
     }
@@ -109,5 +111,9 @@ public class MyIntentService extends IntentService {
 
     private void handleSaveInHistory(String title) {
         processor.saveInHistory(title);
+    }
+
+    private void handleSaveInDB (String title) {
+        processor.saveInDB(title);
     }
 }

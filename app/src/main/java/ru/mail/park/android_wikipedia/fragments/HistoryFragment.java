@@ -134,4 +134,8 @@ public class HistoryFragment extends Fragment {
         Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
         bus.unregister(this);
     }
+
+    public static void refresh() {
+        articlesList = null;
+    }
 }
