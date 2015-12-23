@@ -25,5 +25,5 @@ public interface DbService {
 
     Article getRandomArticle();
 
-    Article getArticleLikeByTitle(String title);
+    List<Article> getArticleLikeByTitle(String title);
 }

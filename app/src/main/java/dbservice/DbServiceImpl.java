@@ -210,7 +210,7 @@ public class DbServiceImpl implements DbService {
     }
 
     @Override
-    public Article getArticleLikeByTitle(String title) {
+    public List<Article> getArticleLikeByTitle(String title) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String[] projection = {
@@ -226,19 +226,23 @@ public class DbServiceImpl implements DbService {
         };
 
         Cursor c = db.query(ArticleEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null);
-        Article article = null;
 
-        if (c.getCount() > 0) {
+        List<Article> articles = new ArrayList<>();
+        if(c.getCount() > 0) {
             c.moveToFirst();
-            article = new Article(
-                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_TITLE)),
-                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LOGO)),
-                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LINK)),
-                    c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_BODY))
-            );
+            while (!c.isAfterLast()) {
+                Article article = new Article(
+                        c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_TITLE)),
+                        c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LOGO)),
+                        c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_LINK)),
+                        c.getString(c.getColumnIndex(ArticleEntry.COLUMN_NAME_BODY))
+                );
+                articles.add(article);
+                c.moveToNext();
+            }
         }
 
         c.close();
-        return  article;
+        return  articles;
     }
 }

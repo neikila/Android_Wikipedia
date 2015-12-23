@@ -23,6 +23,7 @@ import rest.MediaWikiCommunicator;
 import rest.MediaWikiCommunicatorImpl;
 import retrofit.RetrofitError;
 import ru.mail.park.android_wikipedia.R;
+import utils.CustomSettings;
 import wikipedia.Article;
 import java.io.IOException;
 
@@ -35,10 +36,12 @@ public class Processor {
     private DbService dbService;
     private Context context;
     final private static String IMAGE_DIR = "imageDir";
+    final private CustomSettings settings;
 
     public Processor(Context context) {
         this.context = context;
         dbService = new DbServiceImpl(context);
+        settings = new CustomSettings(context);
     }
 
     public Article getArticleByTitle(String title) {
@@ -220,17 +223,23 @@ public class Processor {
     }
 
     public List<Article> searchArticleByTitle(String title) throws RetrofitError {
-        List<Article> list = null;
-        try {
-            List<JSONObject> temp = WikitextHandler.getListOfArticleInGSON(wiki.getListOfArticle(title, -1));
-            list = new ArrayList<>();
-            for (JSONObject obj: temp) {
-                list.add(new Article((String)obj.get(WikitextHandler.TITLE)));
+        List<Article> list = new ArrayList<>();
+        if (settings.getOfflineSettings()) {
+            List<Article> temp = dbService.getArticleLikeByTitle(title);
+            for (Article article: temp) {
+                list.add(article);
             }
-        } catch (IOException e) {
-            // TODO error
+        } else {
+            try {
+                List<JSONObject> temp = WikitextHandler.getListOfArticleInGSON(wiki.getListOfArticle(title, -1));
+                for (JSONObject obj : temp) {
+                    list.add(new Article((String) obj.get(WikitextHandler.TITLE)));
+                }
+            } catch (IOException e) {
+                // TODO error
+            }
         }
-        return list == null ? new ArrayList<Article>(): list;
+        return list;
     }
 
     public void showToast(String path) {
