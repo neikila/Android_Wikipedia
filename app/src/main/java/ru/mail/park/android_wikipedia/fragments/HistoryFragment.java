@@ -55,11 +55,11 @@ public class HistoryFragment extends Fragment {
                         TextView no_Results = (TextView) getActivity().findViewById(R.id.NoResultMessage);
                         if(articlesList.size() != 0) {
                             no_Results.setVisibility(View.GONE);
-                            adapter.setArticles(articlesList);
-                            adapter.notifyDataSetChanged();
                         } else {
                             no_Results.setVisibility(View.VISIBLE);
                         }
+                        adapter.setArticles(articlesList);
+                        adapter.notifyDataSetChanged();
                     }
                 });
             } else if (message.getMessageType().equals(OttoMessage.MessageType.UpdateAdapter)) {
@@ -119,32 +119,6 @@ public class HistoryFragment extends Fragment {
         recList.setAdapter(articlesAdapter);
 
         return myFragment;
-    }
-
-    private class ListItemTranslationAdapter extends ArrayAdapter<Article> {
-        public ListItemTranslationAdapter(List<Article> objects) {
-            super(getActivity(), 0, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
-                viewHolder = new ViewHolder();
-                viewHolder.articleName = (TextView) convertView.findViewById(R.id.article_name);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
-
-            viewHolder.articleName.setText(getItem(position).getTitle());
-            return convertView;
-        }
-
-        private class ViewHolder {
-            public TextView articleName;
-        }
     }
 
     @Override

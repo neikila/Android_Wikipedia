@@ -25,9 +25,15 @@ public class CustomSettings {
     public Boolean getOfflineSettings(){
         return OFFLINE;
     }
-    public void setOfflineSettings(Context context, Boolean value){
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean(APP_PREFERENCES_OFFLINE, value);
-        editor.commit();
+    public boolean setOfflineSettings(Context context, Boolean value){
+        if (OFFLINE != value) {
+            SharedPreferences.Editor editor = settings.edit();
+            OFFLINE = value;
+            editor.putBoolean(APP_PREFERENCES_OFFLINE, value);
+            editor.commit();
+            return true;
+        } else {
+            return false;
+        }
     }
 }

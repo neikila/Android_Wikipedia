@@ -76,8 +76,7 @@ public class SettingsFragment extends Fragment {
         cleanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainFragment.refresh();
-                SavedArticlesFragment.refresh();
+                refresh();
                 new ServiceHelper().cleanDB(getActivity());
             }
         });
@@ -86,7 +85,9 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 CustomSettings settings = new CustomSettings(getActivity().getApplication());
-                settings.setOfflineSettings(getActivity().getApplication(), isChecked);
+                if (settings.setOfflineSettings(getActivity().getApplication(), isChecked)) {
+                    refresh();
+                }
             }
         });
         return view;
@@ -97,5 +98,10 @@ public class SettingsFragment extends Fragment {
         super.onDestroyView();
         Bus bus = ((ApplicationModified) getActivity().getApplication()).getBus();
         bus.unregister(this);
+    }
+
+    private void refresh() {
+        MainFragment.refresh();
+        SavedArticlesFragment.refresh();
     }
 }
