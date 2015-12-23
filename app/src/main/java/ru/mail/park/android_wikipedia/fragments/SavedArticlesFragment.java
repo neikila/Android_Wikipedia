@@ -30,6 +30,8 @@ import wikipedia.Article;
 public class SavedArticlesFragment extends Fragment {
     private Handler handler;
     private RecyclerView recList;
+    private static List<Article> articlesList;
+
 
     public static SavedArticlesFragment newInstance() {
         SavedArticlesFragment fragment = new SavedArticlesFragment();
@@ -50,7 +52,8 @@ public class SavedArticlesFragment extends Fragment {
                     @Override
                     public void run() {
                         ArticlesAdapter adapter = (ArticlesAdapter) recList.getAdapter();
-                        adapter.setArticles(((ResultArticle) message).getArticles());
+                        articlesList = ((ResultArticle) message).getArticles();
+                        adapter.setArticles(articlesList);
                         adapter.notifyDataSetChanged();
                     }
                 });
@@ -88,23 +91,29 @@ public class SavedArticlesFragment extends Fragment {
         bus.register(this);
 
         View myFragment = inflater.inflate(R.layout.fragment_saved_articles, container, false);
-        recList = (RecyclerView) myFragment.findViewById(R.id.card_list);
+        recList = (RecyclerView) myFragment.findViewById(R.id.card_list_on_saved_articles);
         recList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this.getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
 
-        ArticlesAdapter articlesAdapter = new ArticlesAdapter(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String title = ((TextView) v.findViewById(R.id.title)).getText().toString();
                 ((BaseActivity) getActivity()).openArticle(title);
             }
-        });
+        };
+        ArticlesAdapter articlesAdapter;
+        if (articlesList == null) {
+            articlesAdapter = new ArticlesAdapter(listener);
+            new ServiceHelper().getSavedArticles(this.getActivity());
+        } else {
+            articlesAdapter = new ArticlesAdapter(listener, articlesList);
+        }
         recList.setAdapter(articlesAdapter);
 
-        new ServiceHelper().getSavedArticles(getActivity());
-        return inflater.inflate(R.layout.fragment_saved_articles, container, false);
+        return myFragment;
     }
 
     @Override
