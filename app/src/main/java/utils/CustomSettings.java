@@ -15,7 +15,11 @@ public class CustomSettings {
     public SharedPreferences settings;
 
     public CustomSettings(Context context) {
-        settings = context.getSharedPreferences(SettingsFragment.APP_PREFERENCES, Context.MODE_PRIVATE);
+        settings = context.
+                getSharedPreferences(
+                        SettingsFragment.APP_PREFERENCES,
+                        Context.MODE_PRIVATE
+                );
         OFFLINE = settings.getBoolean(APP_PREFERENCES_OFFLINE, false);
     }
     public Boolean getOfflineSettings(){

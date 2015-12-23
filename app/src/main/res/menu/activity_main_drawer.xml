@@ -10,6 +10,12 @@
             android:id="@+id/nav_history"
             android:icon="@android:drawable/ic_menu_recent_history"
             android:title="История" />
+
+        <item
+            android:id="@+id/nav_save"
+            android:icon="@android:drawable/star_big_on"
+            android:title="Сохранить статью" />
+
         <item
             android:id="@+id/nav_saved_articles"
             android:icon="@android:drawable/star_big_on"
