@@ -12,7 +12,11 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_history">HistoryActivity</string>
     <string name="title_activity_article">ArticleActivity</string>
-
+    <string name="setting_category_visual">Визуальные настройки</string>
+    <string name="setting_change_theme">Сменить тему оформления</string>
+    <string name="setting_category_data">Настройки доступа к данным</string>
+    <string name="setting_offline">Оффлайн режим</string>
+    <string name="setting_offline_placeholder">Отключить доступ в интернет(работа только с сохраненными статьями)</string>
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

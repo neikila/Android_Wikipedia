@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.squareup.otto.Bus;
@@ -18,10 +20,12 @@ import ru.mail.park.android_wikipedia.ArticlesAdapter;
 import ru.mail.park.android_wikipedia.R;
 import ru.mail.park.android_wikipedia.ServiceHelper;
 import utils.CleanSuccess;
+import utils.CustomSettings;
 import utils.ResultArticle;
 
 public class SettingsFragment extends Fragment {
     private Handler handler;
+    public static final String APP_PREFERENCES = "settings";
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
@@ -63,12 +67,24 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        CustomSettings settings = new CustomSettings(getActivity().getApplication());
+        Boolean offline = settings.getOfflineSettings();
+        CheckBox offlineCheckbox = (CheckBox) view.findViewById(R.id.setting_offline);
+        offlineCheckbox.setChecked(offline);
         // TODO спросить где лучше вызывать АсинкТаск. (гарантировано ли, что когда я его вызову вьюшка уже будет создана)
         Button cleanButton = (Button) view.findViewById(R.id.clean_button);
         cleanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new ServiceHelper().cleanDB(getActivity());
+            }
+        });
+        CheckBox offline_settings = (CheckBox) view.findViewById(R.id.setting_offline);
+        offline_settings.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                CustomSettings settings = new CustomSettings(getActivity().getApplication());
+                settings.setOfflineSettings(getActivity().getApplication(), isChecked);
             }
         });
         return view;
