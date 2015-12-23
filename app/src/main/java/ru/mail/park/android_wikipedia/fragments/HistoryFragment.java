@@ -52,8 +52,14 @@ public class HistoryFragment extends Fragment {
                     public void run() {
                         ArticlesAdapter adapter = (ArticlesAdapter) recList.getAdapter();
                         articlesList = ((ResultArticle) message).getArticles();
-                        adapter.setArticles(articlesList);
-                        adapter.notifyDataSetChanged();
+                        TextView no_Results = (TextView) getActivity().findViewById(R.id.NoResultMessage);
+                        if(articlesList.size() != 0) {
+                            no_Results.setVisibility(View.GONE);
+                            adapter.setArticles(articlesList);
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            no_Results.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
             } else if (message.getMessageType().equals(OttoMessage.MessageType.UpdateAdapter)) {

@@ -6,12 +6,17 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
+
         <TextView
-            android:id="@+id/hello_world"
+            android:id="@+id/NoResultMessage"
+            android:layout_alignParentTop="true"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="Hello from history fragment" />
+            android:text="@string/def_message"
+            android:gravity="center"
+            android:textColor="#222"
+            />
 
         <ListView
             android:id="@+id/listWords"

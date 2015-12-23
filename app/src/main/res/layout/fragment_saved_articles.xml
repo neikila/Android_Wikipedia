@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     tools:context="ru.mail.park.android_wikipedia.fragments.MainFragment">
 
+    <TextView
+        android:id="@+id/NoResultMessage"
+        android:layout_alignParentTop="true"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/def_message"
+        android:gravity="center"
+        android:textColor="#222"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/card_list_on_saved_articles"
         android:layout_width="match_parent"

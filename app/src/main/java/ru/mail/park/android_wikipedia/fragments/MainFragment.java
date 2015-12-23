@@ -54,8 +54,14 @@ public class MainFragment extends Fragment {
                     public void run() {
                         ArticlesAdapter adapter = (ArticlesAdapter) recList.getAdapter();
                         articlesList = ((ResultArticle) message).getArticles();
-                        adapter.setArticles(articlesList);
-                        adapter.notifyDataSetChanged();
+                        TextView no_Results = (TextView) getActivity().findViewById(R.id.NoResultMessage);
+                        if(articlesList.size() != 0) {
+                            no_Results.setVisibility(View.GONE);
+                            adapter.setArticles(articlesList);
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            no_Results.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
             } else if (message.getMessageType().equals(OttoMessage.MessageType.UpdateAdapter)) {
@@ -104,8 +110,8 @@ public class MainFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                    Toast.makeText(getActivity(), "Still not implemented\n" + "Query: " + query, Toast.LENGTH_SHORT).show();
-                    new ServiceHelper().findArticles(getActivity(), query);
+                Toast.makeText(getActivity(), "Still not implemented\n" + "Query: " + query, Toast.LENGTH_SHORT).show();
+                new ServiceHelper().findArticles(getActivity(), query);
                 return true;
             }
 
