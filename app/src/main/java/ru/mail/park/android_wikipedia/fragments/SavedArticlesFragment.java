@@ -154,4 +154,8 @@ public class SavedArticlesFragment extends Fragment {
             public TextView articleName;
         }
     }
+
+    public static void refresh() {
+        articlesList = null;
+    }
 }

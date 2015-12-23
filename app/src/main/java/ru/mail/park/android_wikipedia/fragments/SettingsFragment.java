@@ -77,6 +77,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 MainFragment.refresh();
+                SavedArticlesFragment.refresh();
                 new ServiceHelper().cleanDB(getActivity());
             }
         });
