@@ -92,14 +92,6 @@ public class ArticleFragment extends Fragment {
         bus.register(this);
 
         View rootView = inflater.inflate(R.layout.fragment_article, container, false);
-        tocButton = (FloatingActionButton)rootView.findViewById(R.id.fab);
-        tocButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("ADA");
-                tocButton.postDelayed(hideToCButtonRunnable, TOC_BUTTON_HIDE_DELAY);
-            }
-        });
         new ServiceHelper().getArticle(getActivity(), title);
         setArticle(rootView);
         return rootView;
