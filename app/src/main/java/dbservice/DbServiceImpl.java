@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -121,19 +122,23 @@ public class DbServiceImpl implements DbService {
     public void saveArticleInHistory(Article article) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(HistoryOfSearchEntry.COLUMN_NAME_TITLE, article.getTitle());
-        values.put(HistoryOfSearchEntry.COLUMN_NAME_LINK, article.getLink());
-        values.put(HistoryOfSearchEntry.COLUMN_NAME_LOGO, article.getLogo());
-        values.put(HistoryOfSearchEntry.COLUMN_NAME_TIME, Calendar.getInstance().getTimeInMillis());
+        try {
+            ContentValues values = new ContentValues();
+            values.put(HistoryOfSearchEntry.COLUMN_NAME_TITLE, article.getTitle());
+            values.put(HistoryOfSearchEntry.COLUMN_NAME_LINK, article.getLink());
+            values.put(HistoryOfSearchEntry.COLUMN_NAME_LOGO, article.getLogo());
+            values.put(HistoryOfSearchEntry.COLUMN_NAME_TIME, Calendar.getInstance().getTimeInMillis());
 
-        db.insert(HistoryOfSearchEntry.TABLE_NAME, null, values);
-        db.execSQL(HistoryOfSearchContract.SQL_DELETE_NOT_LAST_50_ENTRIES);
+            db.insert(HistoryOfSearchEntry.TABLE_NAME, null, values);
+            db.execSQL(HistoryOfSearchContract.SQL_DELETE_NOT_LAST_50_ENTRIES);
+        } catch (Exception e) {
+        }
     }
 
     @Override
     public void saveArticle(Article article) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        try {
 
         ContentValues values = new ContentValues();
         values.put(ArticleEntry.COLUMN_NAME_TITLE, article.getTitle());
@@ -143,6 +148,9 @@ public class DbServiceImpl implements DbService {
         values.put(ArticleEntry.COLUMN_NAME_TIME, Calendar.getInstance().getTimeInMillis());
 
         db.insert(ArticleEntry.TABLE_NAME, null, values);
+        } catch (Exception e) {
+
+        }
     }
 
     @Override

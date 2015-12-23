@@ -25,7 +25,7 @@ public final class ArticleContract {
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + ArticleEntry.TABLE_NAME + " (" +
             ArticleEntry._ID + " INTEGER PRIMARY KEY" + COMMA_SEP +
-            ArticleEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
+            ArticleEntry.COLUMN_NAME_TITLE + TEXT_TYPE + " UNIQUE " + COMMA_SEP +
             ArticleEntry.COLUMN_NAME_BODY + TEXT_TYPE + COMMA_SEP +
             ArticleEntry.COLUMN_NAME_LOGO + TEXT_TYPE + COMMA_SEP +
             ArticleEntry.COLUMN_NAME_LINK + TEXT_TYPE + COMMA_SEP +

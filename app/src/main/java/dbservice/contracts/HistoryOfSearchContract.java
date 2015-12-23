@@ -23,7 +23,7 @@ public final class HistoryOfSearchContract {
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + HistoryOfSearchEntry.TABLE_NAME + " (" +
                     HistoryOfSearchEntry._ID + " INTEGER PRIMARY KEY" + COMMA_SEP +
-                    HistoryOfSearchEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
+                    HistoryOfSearchEntry.COLUMN_NAME_TITLE + TEXT_TYPE + " UNIQUE " + COMMA_SEP +
                     HistoryOfSearchEntry.COLUMN_NAME_LINK + TEXT_TYPE + COMMA_SEP +
                     HistoryOfSearchEntry.COLUMN_NAME_LOGO + TEXT_TYPE + COMMA_SEP +
                     HistoryOfSearchEntry.COLUMN_NAME_TIME + INT_TYPE + " )";
